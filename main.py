@@ -1,8 +1,7 @@
 from tkinter import *
-
 from tkinter import ttk  # ttk is used for styling
-
 from PIL import Image, ImageTk
+from student import Student
 
 
 class face_recognition_system:
@@ -28,7 +27,7 @@ class face_recognition_system:
         )
         title_lbl.place(x=0, y=0, width=1550, height=45)
 
-        # student buttons
+        # buttons
 
         # img2 .. student details
         img2 = Image.open("Images/student.png")
@@ -37,6 +36,7 @@ class face_recognition_system:
 
         b1 = Button(
             bg_img,
+            command=self.student_details,
             image=self.photoimg2,
             cursor="hand2",
             borderwidth=3,
@@ -45,6 +45,7 @@ class face_recognition_system:
 
         b1_1 = Button(
             bg_img,
+            command=self.student_details,
             text="Student Details",
             cursor="hand2",
             font=("times new roman", 15, "bold"),
@@ -142,6 +143,12 @@ class face_recognition_system:
             fg="black",
         )
         b1_1.place(x=1100, y=600, width=230, height=40)
+
+    ######################functions buttons###########################
+
+    def student_details(self):
+        self.new_window = Toplevel(self.root)
+        self.app = Student(self.new_window)
 
 
 if __name__ == "__main__":
