@@ -4,8 +4,6 @@ from tkinter import ttk  # ttk is used for styling
 
 from PIL import Image, ImageTk
 
-import os
-
 
 class face_recognition_system:
     def __init__(self, root):
@@ -29,6 +27,121 @@ class face_recognition_system:
             fg="white",
         )
         title_lbl.place(x=0, y=0, width=1550, height=45)
+
+        # student buttons
+
+        # img2 .. student details
+        img2 = Image.open("Images/student.png")
+        img2 = img2.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg2 = ImageTk.PhotoImage(img2)
+
+        b1 = Button(
+            bg_img,
+            image=self.photoimg2,
+            cursor="hand2",
+            borderwidth=3,
+        )
+        b1.place(x=200, y=100, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Student Details",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=200, y=300, width=230, height=40)
+
+        # img3 .. face detector
+        img3 = Image.open("Images/face_detector1.jpeg")
+        img3 = img3.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg3 = ImageTk.PhotoImage(img3)
+        b1 = Button(
+            bg_img,
+            image=self.photoimg3,
+            cursor="hand2",
+            borderwidth=3,
+        )
+        b1.place(x=650, y=100, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Face Detector",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=650, y=300, width=230, height=40)
+
+        # img4 .. Attendance
+        img4 = Image.open("Images/attendance.jpeg")
+        img4 = img4.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg4 = ImageTk.PhotoImage(img4)
+        b1 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+        b1.place(x=1100, y=100, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Attendance",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=1100, y=300, width=230, height=40)
+
+        # img5 .. Train Data
+        img5 = Image.open("Images/trainData2.jpg")
+        img5 = img5.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg5 = ImageTk.PhotoImage(img5)
+        b1 = Button(bg_img, image=self.photoimg5, cursor="hand2")
+        b1.place(x=200, y=400, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Train Data",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=200, y=600, width=230, height=40)
+
+        # img6 .. Photos
+        img6 = Image.open("Images/photos.png")
+        img6 = img6.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg6 = ImageTk.PhotoImage(img6)
+        b1 = Button(bg_img, image=self.photoimg6, cursor="hand2")
+        b1.place(x=650, y=400, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Photos",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=650, y=600, width=230, height=40)
+
+        # img7 .. Exit
+        img7 = Image.open("Images/exit2.jpeg")
+        img7 = img7.resize((220, 220), Image.ANTIALIAS)
+        self.photoimg7 = ImageTk.PhotoImage(img7)
+        b1 = Button(bg_img, image=self.photoimg7, cursor="hand2")
+        b1.place(x=1100, y=400, width=230, height=230)
+
+        b1_1 = Button(
+            bg_img,
+            text="Exit",
+            cursor="hand2",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        b1_1.place(x=1100, y=600, width=230, height=40)
 
 
 if __name__ == "__main__":
