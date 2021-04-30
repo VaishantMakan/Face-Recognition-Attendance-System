@@ -228,13 +228,16 @@ class Student:
         )
         batch_label.grid(row=1, column=0, padx=10, pady=5, sticky=W)
 
-        batch_entry = ttk.Entry(
+        batch_combo = ttk.Combobox(
             class_Student_frame,
             textvariable=self.var_batch,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            font=("times new roman", 15, "bold"),
+            state="readonly",
+            width=11,
         )
-        batch_entry.grid(row=1, column=1, padx=10, pady=5, sticky=W)
+        batch_combo["values"] = ("Batch", "2CS", "COE", "EE")
+        batch_combo.current(0)  # to give the bydeafault index
+        batch_combo.grid(row=1, column=1, padx=10, pady=10, sticky=W)
 
         # Batch_No
         batch_no_label = Label(
@@ -245,13 +248,24 @@ class Student:
         )
         batch_no_label.grid(row=1, column=2, padx=30, pady=25, sticky=W)
 
-        batch_no_entry = ttk.Entry(
+        # batch_no_entry = ttk.Entry(
+        #     class_Student_frame,
+        #     textvariable=self.var_batchNum,
+        #     width=15,
+        #     font=("times new roman", 13, "bold"),
+        # )
+        # batch_no_entry.grid(row=1, column=3, padx=0, pady=10, sticky=W)
+
+        batch_no_combo = ttk.Combobox(
             class_Student_frame,
             textvariable=self.var_batchNum,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            font=("times new roman", 15, "bold"),
+            state="readonly",
+            width=11,
         )
-        batch_no_entry.grid(row=1, column=3, padx=0, pady=10, sticky=W)
+        batch_no_combo["values"] = ("Batch Num", "9", "10", "11", "12")
+        batch_no_combo.current(0)  # to give the bydeafault index
+        batch_no_combo.grid(row=1, column=3, padx=0, pady=10, sticky=W)
 
         # Gender
         gender_label = Label(
@@ -262,13 +276,16 @@ class Student:
         )
         gender_label.grid(row=2, column=0, padx=10, pady=5, sticky=W)
 
-        gender_entry = ttk.Entry(
+        gender_combo = ttk.Combobox(
             class_Student_frame,
             textvariable=self.var_gender,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            font=("times new roman", 15, "bold"),
+            state="readonly",
+            width=11,
         )
-        gender_entry.grid(row=2, column=1, padx=10, pady=5, sticky=W)
+        gender_combo["values"] = ("Select gender", "Male", "Female", "Others")
+        gender_combo.current(0)  # to give the bydeafault index
+        gender_combo.grid(row=2, column=1, padx=10, pady=10, sticky=W)
 
         # DOB
         dob_label = Label(
@@ -394,8 +411,10 @@ class Student:
         )
         save_btn.grid(row=0, column=0)
 
+        # update button
         update_btn = Button(
             btn_frame,
+            command=self.update_data,
             width=23,
             height=2,
             text="Update",
@@ -405,8 +424,10 @@ class Student:
         )
         update_btn.grid(row=0, column=1)
 
+        # delete button
         delete_btn = Button(
             btn_frame,
+            command=self.delete_data,
             width=24,
             height=2,
             text="Delete",
@@ -416,8 +437,10 @@ class Student:
         )
         delete_btn.grid(row=0, column=2)
 
+        # reset button
         reset_btn = Button(
             btn_frame,
+            command=self.reset_data,
             width=24,
             height=2,
             text="Reset",
@@ -686,7 +709,10 @@ class Student:
             for i in data:
                 self.student_table.insert("", END, values=i)
 
-            conn.commit()
+        else:
+            self.student_table.delete(*self.student_table.get_children())
+
+        conn.commit()
         conn.close()
 
     # ======================= get cursor =================#
@@ -710,6 +736,124 @@ class Student:
         self.var_fatherNum.set(data[12]),
         self.var_motherNum.set(data[13]),
         self.var_radioButton1.set(data[14]),
+
+    # ======= update function ======= #
+    def update_data(self):
+        if (
+            self.var_dep.get() == "Select Department"
+            or self.var_course.get() == "Select Course"
+            or self.var_year.get() == "Select Year"
+            or self.var_semester.get() == "Select Semester"
+            or self.var_rollNum.get() == ""
+            or self.var_std_name.get() == ""
+            or self.var_batch.get() == ""
+            or self.var_batchNum.get() == ""
+            or self.var_dob.get() == ""
+            or self.var_email.get() == ""
+            or self.var_phone.get() == ""
+        ):
+            messagebox.showerror("Error", "All Fields are required", parent=self.root)
+        else:
+            try:
+                Update = messagebox.askyesno(
+                    "Update",
+                    "Do you want to update the student details",
+                    parent=self.root,
+                )
+                if Update > 0:
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        username="root",
+                        password="ShadowWalker77",
+                        database="Face_Recognition_db",
+                    )
+                    my_cursor = conn.cursor()
+                    my_cursor.execute(
+                        "update student_table set dep=%s, course=%s,year=%s,semester=%s,std_name=%s,batch=%s,batch_num=%s,gender=%s,dob=%s,email=%s,phone=%s,father_num=%s,mother_num=%s,photoSample=%s where rollNum=%s",
+                        (
+                            self.var_dep.get(),
+                            self.var_course.get(),
+                            self.var_year.get(),
+                            self.var_semester.get(),
+                            self.var_std_name.get(),
+                            self.var_batch.get(),
+                            self.var_batchNum.get(),
+                            self.var_gender.get(),
+                            self.var_dob.get(),
+                            self.var_email.get(),
+                            self.var_phone.get(),
+                            self.var_fatherNum.get(),
+                            self.var_motherNum.get(),
+                            self.var_radioButton1.get(),
+                            self.var_rollNum.get(),
+                        ),
+                    )
+                else:
+                    if not Update:
+                        return
+                messagebox.showinfo(
+                    "Success", "Student details successfully updated", parent=self.root
+                )
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+            except Exception as es:
+                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
+
+    # ======== delete function ======= #
+    def delete_data(self):
+        if self.var_rollNum.get() == "":
+            messagebox.showerror(
+                "Error", "Student ID must be required", parent=self.root
+            )
+        else:
+            try:
+                delete = messagebox.askyesno(
+                    "Student Delete Page",
+                    "Do you want to delete this student ?",
+                    parent=self.root,
+                )
+                if delete > 0:
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        username="root",
+                        password="ShadowWalker77",
+                        database="Face_Recognition_db",
+                    )
+                    my_cursor = conn.cursor()
+                    sql = "delete from student_table where rollNum=%s"
+                    val = (self.var_rollNum.get(),)
+                    my_cursor.execute(sql, val)
+                else:
+                    if not delete:
+                        return
+
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+                messagebox.showinfo(
+                    "Delete", "Successfully deleted student details", parent=self.root
+                )
+            except Exception as es:
+                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
+
+    # ======== reset function ======== #
+    def reset_data(self):
+        self.var_dep.set("Select Department")
+        self.var_course.set("Select Course")
+        self.var_year.set("Select Year")
+        self.var_semester.set("Select Semester")
+        self.var_rollNum.set("")
+        self.var_std_name.set("")
+        self.var_batch.set("Batch")
+        self.var_batchNum.set("Batch Num")
+        self.var_gender.set("Select gender")
+        self.var_dob.set("")
+        self.var_email.set("")
+        self.var_phone.set("")
+        self.var_fatherNum.set("")
+        self.var_motherNum.set("")
+        self.var_radioButton1.set("")
 
 
 if __name__ == "__main__":
