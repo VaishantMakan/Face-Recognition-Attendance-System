@@ -147,5 +147,23 @@ __pycache__
 # Portable Document Format
 *.pdf
 
+#additional virtual env stuff
 .pylintrc
 faceRecog-env/pyvenv.cfg
+faceRecog-env/bin/wheel
+faceRecog-env/bin/python3.9
+faceRecog-env/bin/python3
+faceRecog-env/bin/python
+faceRecog-env/bin/pip3.9
+faceRecog-env/bin/pip3
+faceRecog-env/bin/pip
+faceRecog-env/bin/f2py3.9
+faceRecog-env/bin/f2py
+faceRecog-env/bin/f2py3
+faceRecog-env/bin/blackd
+faceRecog-env/bin/black-primer
+faceRecog-env/bin/black
+faceRecog-env/bin/activate
+faceRecog-env/bin/activate.csh
+faceRecog-env/bin/activate.fish
+faceRecog-env/bin/Activate.ps1
