@@ -1,3 +1,6 @@
+import numpy as np
+import cv2
+
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
@@ -26,6 +29,8 @@ class Student:
         self.var_phone = StringVar()
         self.var_fatherNum = StringVar()
         self.var_motherNum = StringVar()
+
+        self.var_stdIdforImage = ""
 
         # img1 = main background
         img1 = Image.open("Images/bg_Student.jpeg")
@@ -457,6 +462,7 @@ class Student:
 
         take_photo_btn = Button(
             btn_frame1,
+            command=self.generate_dataset,
             width=47,
             height=2,
             text="Take Photo Sample",
@@ -656,9 +662,10 @@ class Student:
             try:
                 conn = mysql.connector.connect(
                     host="localhost",
-                    username="root",
+                    user="root",
                     password="ShadowWalker77",
                     database="Face_Recognition_db",
+                    auth_plugin="mysql_native_password",
                 )
                 my_cursor = conn.cursor()
                 my_cursor.execute(
@@ -696,9 +703,10 @@ class Student:
     def fetch_data(self):
         conn = mysql.connector.connect(
             host="localhost",
-            username="root",
+            user="root",
             password="ShadowWalker77",
             database="Face_Recognition_db",
+            auth_plugin="mysql_native_password",
         )
         my_cursor = conn.cursor()
         my_cursor.execute("select * from student_table")
@@ -716,6 +724,7 @@ class Student:
         conn.close()
 
     # ======================= get cursor =================#
+
     def get_cursor(self, event=""):
         cursor_focus = self.student_table.focus()
         content = self.student_table.item(cursor_focus)
@@ -736,6 +745,8 @@ class Student:
         self.var_fatherNum.set(data[12]),
         self.var_motherNum.set(data[13]),
         self.var_radioButton1.set(data[14]),
+
+        self.var_stdIdforImage = str(data[4])
 
     # ======= update function ======= #
     def update_data(self):
@@ -763,9 +774,10 @@ class Student:
                 if Update > 0:
                     conn = mysql.connector.connect(
                         host="localhost",
-                        username="root",
+                        user="root",
                         password="ShadowWalker77",
                         database="Face_Recognition_db",
+                        auth_plugin="mysql_native_password",
                     )
                     my_cursor = conn.cursor()
                     my_cursor.execute(
@@ -816,9 +828,10 @@ class Student:
                 if delete > 0:
                     conn = mysql.connector.connect(
                         host="localhost",
-                        username="root",
+                        user="root",
                         password="ShadowWalker77",
                         database="Face_Recognition_db",
+                        auth_plugin="mysql_native_password",
                     )
                     my_cursor = conn.cursor()
                     sql = "delete from student_table where rollNum=%s"
@@ -854,6 +867,129 @@ class Student:
         self.var_fatherNum.set("")
         self.var_motherNum.set("")
         self.var_radioButton1.set("")
+
+    # ==== generate data set and take photo sample ==== #
+    def generate_dataset(self):
+        if (
+            self.var_dep.get() == "Select Department"
+            or self.var_course.get() == "Select Course"
+            or self.var_year.get() == "Select Year"
+            or self.var_semester.get() == "Select Semester"
+            or self.var_rollNum.get() == ""
+            or self.var_std_name.get() == ""
+            or self.var_batch.get() == ""
+            or self.var_batchNum.get() == ""
+            or self.var_dob.get() == ""
+            or self.var_email.get() == ""
+            or self.var_phone.get() == ""
+        ):
+            messagebox.showerror("Error", "All Fields are required", parent=self.root)
+        else:
+            try:
+                Update = messagebox.askyesno(
+                    "Update",
+                    "Do you want to update the student details",
+                    parent=self.root,
+                )
+                if Update > 0:
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        password="ShadowWalker77",
+                        database="Face_Recognition_db",
+                        auth_plugin="mysql_native_password",
+                    )
+                    my_cursor = conn.cursor()
+                    my_cursor.execute("select * from student_table")
+                    myresult = my_cursor.fetchall()
+                    id = 0
+                    for x in myresult:
+                        id += 1
+                    my_cursor.execute(
+                        "update student_table set dep=%s, course=%s,year=%s,semester=%s,std_name=%s,batch=%s,batch_num=%s,gender=%s,dob=%s,email=%s,phone=%s,father_num=%s,mother_num=%s,photoSample=%s where rollNum=%s",
+                        (
+                            self.var_dep.get(),
+                            self.var_course.get(),
+                            self.var_year.get(),
+                            self.var_semester.get(),
+                            self.var_std_name.get(),
+                            self.var_batch.get(),
+                            self.var_batchNum.get(),
+                            self.var_gender.get(),
+                            self.var_dob.get(),
+                            self.var_email.get(),
+                            self.var_phone.get(),
+                            self.var_fatherNum.get(),
+                            self.var_motherNum.get(),
+                            self.var_radioButton1.get(),
+                            self.var_rollNum.get(),
+                        ),
+                    )
+                conn.commit()
+                self.fetch_data()
+                self.reset_data()
+                conn.close()
+
+                # == load predefined data on face frontals from opencv
+
+                cam = cv2.VideoCapture(0)
+                cam.set(3, 640)  # set video width
+                cam.set(4, 480)  # set video height
+
+                face_detector = cv2.CascadeClassifier(
+                    "haarcascade_frontalface_default.xml"
+                )
+
+                count = 0
+
+                while True:
+
+                    ret, img = cam.read()
+                    # img = cv2.flip(img, -1) # flip video image vertically
+                    if ret == False:
+                        continue
+
+                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    faces = face_detector.detectMultiScale(gray, 1.3, 5)
+
+                    for (x, y, w, h) in faces:
+
+                        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                        count += 1
+
+                        # Save the captured image into the datasets folder
+                        cv2.imwrite(
+                            "dataset/"
+                            + str(self.var_stdIdforImage)
+                            + "."
+                            + str(count)
+                            + ".jpg",
+                            gray[y : y + h, x : x + w],
+                        )
+                        cv2.putText(
+                            img,
+                            str(count),
+                            (50, 50),
+                            cv2.FONT_HERSHEY_COMPLEX,
+                            2,
+                            (0, 255, 0),
+                            2,
+                        )
+
+                        cv2.imshow("image", img)
+
+                    k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
+                    if k == 27:  # escape key ASCII Value
+                        break
+                    elif count >= 1:  # Take 100 face sample and stop video
+                        break
+
+                cam.release()
+                cv2.destroyAllWindows()
+                messagebox.showinfo("Result", "Generating data set completed!")
+
+            except Exception as es:
+                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
 
 
 if __name__ == "__main__":

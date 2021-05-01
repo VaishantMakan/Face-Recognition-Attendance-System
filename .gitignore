@@ -132,3 +132,20 @@ dmypy.json
 .DS_Store
 __pycache__
 *.pyc
+
+# JPEG
+*.jpg
+*.jpeg
+*.jpe
+*.jif
+*.jfif
+*.jfi
+
+# Portable Network Graphics
+*.png
+
+# Portable Document Format
+*.pdf
+
+.pylintrc
+faceRecog-env/pyvenv.cfg
