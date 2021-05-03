@@ -4,6 +4,8 @@ from PIL import Image, ImageTk
 from student import Student
 import os
 
+from face_recognition import Face_Recognition
+
 
 class face_recognition_system:
     def __init__(self, root):
@@ -61,6 +63,7 @@ class face_recognition_system:
         self.photoimg3 = ImageTk.PhotoImage(img3)
         b1 = Button(
             bg_img,
+            command=self.face_data,
             image=self.photoimg3,
             cursor="hand2",
             borderwidth=3,
@@ -69,6 +72,7 @@ class face_recognition_system:
 
         b1_1 = Button(
             bg_img,
+            command=self.face_data,
             text="Face Detector",
             cursor="hand2",
             font=("times new roman", 15, "bold"),
@@ -154,6 +158,10 @@ class face_recognition_system:
 
     def open_img(self):
         os.system("open dataset")
+
+    def face_data(self):
+        self.new_window = Toplevel(self.root)
+        self.app = Face_Recognition(self.new_window)
 
 
 if __name__ == "__main__":

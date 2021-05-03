@@ -982,11 +982,13 @@ class Student:
                     k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
                     if k == 27:  # escape key ASCII Value
                         break
-                    elif count >= 1:  # Take 100 face sample and stop video
+                    elif count >= 5:  # Take 100 face sample and stop video
                         break
 
                 cam.release()
                 cv2.destroyAllWindows()
+
+                # messagebox.showinfo("Training","Please wait while we are training the images")
 
                 # ======== Training Data ========== #
 
