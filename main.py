@@ -1,10 +1,12 @@
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
+
 from student import Student
 import os
 
 from face_recognition import Face_Recognition
+from attendance import Attendance
 
 
 class face_recognition_system:
@@ -85,11 +87,15 @@ class face_recognition_system:
         img4 = Image.open("Images/attendance.jpeg")
         img4 = img4.resize((220, 220), Image.ANTIALIAS)
         self.photoimg4 = ImageTk.PhotoImage(img4)
-        b1 = Button(bg_img, image=self.photoimg4, cursor="hand2")
+
+        b1 = Button(
+            bg_img, command=self.attendance_data, image=self.photoimg4, cursor="hand2"
+        )
         b1.place(x=1100, y=100, width=230, height=230)
 
         b1_1 = Button(
             bg_img,
+            command=self.attendance_data,
             text="Attendance",
             cursor="hand2",
             font=("times new roman", 15, "bold"),
@@ -162,6 +168,10 @@ class face_recognition_system:
     def face_data(self):
         self.new_window = Toplevel(self.root)
         self.app = Face_Recognition(self.new_window)
+
+    def attendance_data(self):
+        self.new_window = Toplevel(self.root)
+        self.app = Attendance(self.new_window)
 
 
 if __name__ == "__main__":

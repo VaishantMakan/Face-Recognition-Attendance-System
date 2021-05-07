@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 import mysql.connector
 import os
+from time import strftime
+from datetime import datetime
 
 
 class Face_Recognition:
@@ -48,6 +50,22 @@ class Face_Recognition:
             fg="black",
         )
         b1_1.place(x=365, y=765, width=150, height=40)
+
+    # ==================Attendance =============================
+    def mark_attendance(self, i):
+        with open("attendance.csv", "r+", newline="\n") as f:
+            myDataList = f.readlines()
+            name_list = []
+            for line in myDataList:
+                entry = line.split(",")
+                name_list.append(entry[0])
+                print(name_list)
+
+            if str(i) not in name_list:
+                now = datetime.now()
+                d1 = now.strftime("%d/%m/%Y")
+                dtString = now.strftime("%H:%M:%S")
+                f.writelines(f"\n{i},{dtString},{d1},Present")
 
     # ==================Face Recognition =========================
     def face_recog(self):
@@ -122,6 +140,7 @@ class Face_Recognition:
                 # Check if confidence is less them 100 ==> "0" is perfect match
                 if confidence < 77:
                     confidence = "  {0}%".format(round(100 - confidence))
+                    self.mark_attendance(id)
                 else:
                     id = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
