@@ -264,7 +264,7 @@ class Attendance:
         self.attendanceReportTable.heading("Date", text="Date")
         self.attendanceReportTable.heading("Attendance", text="Attendance")
 
-        self.attendanceReportTable["show"] = "headings"
+        self.attendanceReportTable["show"] = "headings" # to eliminate extra spacing column at the start
         self.attendanceReportTable.column("RollNum", width=100)
         # self.attendanceReportTable.column("Name", width=100)
         self.attendanceReportTable.column("Time", width=100)
