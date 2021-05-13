@@ -167,3 +167,10 @@ faceRecog-env/bin/activate
 faceRecog-env/bin/activate.csh
 faceRecog-env/bin/activate.fish
 faceRecog-env/bin/Activate.ps1
+faceRecog-env/bin/symilar
+faceRecog-env/bin/pyreverse
+faceRecog-env/bin/pylint
+faceRecog-env/bin/isort-identify-imports
+faceRecog-env/bin/isort
+faceRecog-env/bin/epylint
+.vscode/settings.json
