@@ -174,3 +174,4 @@ faceRecog-env/bin/isort-identify-imports
 faceRecog-env/bin/isort
 faceRecog-env/bin/epylint
 .vscode/settings.json
+faceRecog-env/bin/pybabel
