@@ -141,6 +141,8 @@ class login:
 
         update_btn.place(x=50, y=250, anchor=NW)
 
+    # ---- functions -----#
+
 
 if __name__ == "__main__":
     root = Tk()

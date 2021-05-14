@@ -74,26 +74,26 @@ class login:
 
         memType_combo.place(x=275, y=50, anchor=NW)
 
-        # Enrollment no.
-        rollNum_label = Label(
+        # Email
+        email_label = Label(
             login_frame,
-            text="Enrollment Number",
+            text="Email (thapar.edu)",
             font=("times new roman", 17),
             bg="white",
         )
-        rollNum_label.grid(row=2, column=0, padx=50, pady=10, sticky=W)
+        email_label.grid(row=2, column=0, padx=50, pady=10, sticky=W)
 
-        rollNum_label.place(x=50, y=100, anchor=NW)
+        email_label.place(x=50, y=100, anchor=NW)
 
-        rollNum_entry = ttk.Entry(
+        email_entry = ttk.Entry(
             login_frame,
             textvariable=self.var_rollNum,
             width=22,
             font=("times new roman", 13),
         )
-        rollNum_entry.grid(row=2, column=1, padx=0, pady=10, sticky=W)
+        email_entry.grid(row=2, column=1, padx=0, pady=10, sticky=W)
 
-        rollNum_entry.place(x=275, y=100, anchor=NW)
+        email_entry.place(x=275, y=100, anchor=NW)
 
         # password
         password_label = Label(
