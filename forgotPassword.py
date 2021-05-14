@@ -37,73 +37,69 @@ class login:
         # account label
         account_label = Label(
             login_frame,
-            text="Already have an account ?",
+            text="Reset Password",
             font=("times new roman", 22),
             bg="white",
             fg="red",
         )
         account_label.grid(row=0, column=0, padx=0)
 
-        # memberType label
-        memType_label = Label(
+        # Email
+        email_label = Label(
             login_frame,
-            text="Member Type",
+            text="Email (thapar.edu)",
             font=("times new roman", 17),
             bg="white",
         )
-        memType_label.grid(row=1, column=0, padx=0, pady=15)
+        email_label.place(x=50, y=50, anchor=NW)
 
-        memType_label.place(x=50, y=50, anchor=NW)
-
-        # combo is used for dropdown like entering text
-        memType_combo = ttk.Combobox(
+        email_entry = ttk.Entry(
             login_frame,
-            textvariable=self.var_memType,
-            font=("times new roman", 15),
-            state="readonly",
-            width=17,
-        )
-        memType_combo["values"] = (
-            "",
-            "Student",
-            "Teacher",
-            "Admin",
-        )
-        memType_combo.current(0)  # to give the bydeafault index
-        memType_combo.grid(row=1, column=1)
-
-        memType_combo.place(x=275, y=50, anchor=NW)
-
-        # Enrollment no.
-        rollNum_label = Label(
-            login_frame,
-            text="Enrollment Number",
-            font=("times new roman", 17),
-            bg="white",
-        )
-        rollNum_label.grid(row=2, column=0, padx=50, pady=10, sticky=W)
-
-        rollNum_label.place(x=50, y=100, anchor=NW)
-
-        rollNum_entry = ttk.Entry(
-            login_frame,
-            textvariable=self.var_rollNum,
+            # textvariable=self.var_rollNum,
             width=22,
             font=("times new roman", 13),
         )
-        rollNum_entry.grid(row=2, column=1, padx=0, pady=10, sticky=W)
+        email_entry.place(x=275, y=50, anchor=NW)
 
-        rollNum_entry.place(x=275, y=100, anchor=NW)
+        # otp button
+        otpSend_btn = Button(
+            login_frame,
+            # command=self.add_data,
+            highlightthickness=1,
+            width=17,
+            height=2,
+            text="Send OTP",
+            font=("times new roman", 15, "bold"),
+            bg="white",
+            fg="black",
+        )
+        otpSend_btn.place(x=50, y=95, anchor=NW)
+        otpSend_btn.config(highlightbackground="grey", highlightcolor="grey")
+
+        # otp label
+        otp_label = Label(
+            login_frame,
+            text="OTP :",
+            font=("times new roman", 17),
+            bg="white",
+        )
+        otp_label.place(x=220, y=100, anchor=NW)
+
+        otp_entry = ttk.Entry(
+            login_frame,
+            # textvariable=self.var_rollNum,
+            width=22,
+            font=("times new roman", 13),
+        )
+        otp_entry.place(x=275, y=100, anchor=NW)
 
         # password
         password_label = Label(
             login_frame,
-            text="Password",
+            text="New Password",
             font=("times new roman", 17),
             bg="white",
         )
-        password_label.grid(row=3, column=0, padx=50, pady=10, sticky=W)
-
         password_label.place(x=50, y=150, anchor=NW)
 
         password_entry = ttk.Entry(
@@ -112,51 +108,38 @@ class login:
             width=22,
             font=("times new roman", 13),
         )
-        password_entry.grid(row=3, column=1, padx=0, pady=10, sticky=W)
-
         password_entry.place(x=275, y=150, anchor=NW)
 
-        # Forgot Password button
-        forgotPass_btn = Button(
+        # confirm Password
+        confirmPassword_label = Label(
             login_frame,
-            # command=self.add_data,
-            width=23,
-            height=2,
-            text="Forgot Password",
-            font=("times new roman", 15, "bold"),
+            text="Confirm Password",
+            font=("times new roman", 17),
             bg="white",
-            fg="black",
         )
-        forgotPass_btn.place(x=50, y=200, anchor=NW)
+        confirmPassword_label.place(x=50, y=200, anchor=NW)
 
-        # Reset button
-        reset_btn = Button(
+        password_entry = ttk.Entry(
             login_frame,
-            # command=self.add_data,
-            width=20,
-            height=2,
-            text="Reset",
-            font=("times new roman", 15, "bold"),
-            bg="white",
-            fg="black",
+            textvariable=self.var_password,
+            width=22,
+            font=("times new roman", 13),
         )
-        reset_btn.grid(row=4, column=1)
+        password_entry.place(x=275, y=200, anchor=NW)
 
-        reset_btn.place(x=275, y=200, anchor=NW)
-
-        # Login button
-        login_btn = Button(
+        # update button
+        update_btn = Button(
             login_frame,
             # command=self.add_data,
             width=48,
             height=2,
-            text="Login",
+            text="Update Password",
             font=("times new roman", 15, "bold"),
             bg="white",
             fg="black",
         )
 
-        login_btn.place(x=50, y=250, anchor=NW)
+        update_btn.place(x=50, y=250, anchor=NW)
 
 
 if __name__ == "__main__":
