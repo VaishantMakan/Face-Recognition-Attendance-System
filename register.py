@@ -16,6 +16,16 @@ class register:
         bg_img = Label(self.root, image=self.photoimg1)
         bg_img.place(x=0, y=0, width=1550, height=900)
 
+        # title
+        title_lbl = Label(
+            bg_img,
+            text="REGISTRATION PORTAL",
+            font=("times new roman", 30, "bold"),
+            bg="black",
+            fg="white",
+        )
+        title_lbl.place(x=350, y=100, width=850, height=40)
+
         # student frame
         student_frame = Frame(bg_img, bd=2, bg="white", highlightthickness=5)
         student_frame.place(x=350, y=160, width=350, height=600)
