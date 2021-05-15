@@ -3,7 +3,7 @@ from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
 
 
-class studentMainPage:
+class adminMainPage:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
@@ -234,5 +234,5 @@ class studentMainPage:
 
 if __name__ == "__main__":
     root = Tk()
-    obj = studentMainPage(root)
+    obj = adminMainPage(root)
     root.mainloop()

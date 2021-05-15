@@ -9,7 +9,7 @@ import mysql.connector
 import os
 
 
-class Student:
+class adminCheckStudentDetails:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
@@ -1125,5 +1125,5 @@ class Student:
 
 if __name__ == "__main__":
     root = Tk()
-    obj = Student(root)
+    obj = adminCheckStudentDetails(root)
     root.mainloop()

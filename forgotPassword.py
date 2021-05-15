@@ -3,7 +3,7 @@ from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
 
 
-class login:
+class forgotPassword:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
@@ -43,33 +43,6 @@ class login:
             fg="red",
         )
         account_label.grid(row=0, column=0, padx=0)
-
-        # memberType label
-        memType_label = Label(
-            login_frame,
-            text="Member Type",
-            font=("times new roman", 17),
-            bg="white",
-        )
-        memType_label.place(x=50, y=250, anchor=NW)
-
-        # combo is used for dropdown like entering text
-        memType_combo = ttk.Combobox(
-            login_frame,
-            # textvariable=self.var_memType,
-            font=("times new roman", 15),
-            state="readonly",
-            width=17,
-        )
-        memType_combo["values"] = (
-            "",
-            "Student",
-            "Teacher",
-            "Admin",
-        )
-        memType_combo.current(0)  # to give the bydeafault index
-
-        memType_combo.place(x=275, y=250, anchor=NW)
 
         # Email
         email_label = Label(
@@ -154,6 +127,33 @@ class login:
         )
         password_entry.place(x=275, y=200, anchor=NW)
 
+        # memberType label
+        memType_label = Label(
+            login_frame,
+            text="Member Type",
+            font=("times new roman", 17),
+            bg="white",
+        )
+        memType_label.place(x=50, y=250, anchor=NW)
+
+        # combo is used for dropdown like entering text
+        memType_combo = ttk.Combobox(
+            login_frame,
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=17,
+        )
+        memType_combo["values"] = (
+            "",
+            "Student",
+            "Teacher",
+            "Admin",
+        )
+        memType_combo.current(0)  # to give the bydeafault index
+
+        memType_combo.place(x=275, y=250, anchor=NW)
+
         # update button
         update_btn = Button(
             login_frame,
@@ -173,5 +173,5 @@ class login:
 
 if __name__ == "__main__":
     root = Tk()
-    obj = login(root)
+    obj = forgotPassword(root)
     root.mainloop()

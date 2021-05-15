@@ -43,7 +43,7 @@ class adminCheckTeacherDetails:
         # title
         title_lbl = Label(
             bg_img,
-            text="STUDENT MANAGEMENT SYSTEM",
+            text="TEACHER MANAGEMENT SYSTEM",
             font=("times new roman", 35, "bold"),
             bg="black",
             fg="white",
@@ -84,205 +84,193 @@ class adminCheckTeacherDetails:
             bd=3,
             bg="white",
             relief=SUNKEN,
-            text="Class Student Information",
+            text="Teacher Details",
             font=("times new roman", 12, "bold"),
         )
         teacher_frame.place(x=5, y=270, width=680, height=480)
 
-        # studentid (roll no.)
-        studentId_label = Label(
+        # teacher ID
+        teacherID_label = Label(
             teacher_frame,
-            text="Roll No",
-            font=("times new roman", 17, "bold"),
+            text="Teacher ID",
+            font=("times new roman", 17),
             bg="white",
         )
-        studentId_label.grid(row=0, column=0, padx=10, pady=15, sticky=W)
+        teacherID_label.place(x=10, y=30, anchor=NW)
 
-        studentID_entry = ttk.Entry(
+        teacherID_entry = ttk.Entry(
             teacher_frame,
-            textvariable=self.var_rollNum,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_rollNum,
+            width=22,
+            font=("times new roman", 13),
         )
-        studentID_entry.grid(row=0, column=1, padx=10, pady=5, sticky=W)
+        teacherID_entry.place(x=180, y=30, anchor=NW)
 
-        # student name
-        studentName_label = Label(
+        # Name
+        name_label = Label(
             teacher_frame,
-            text="Student Name",
-            font=("times new roman", 17, "bold"),
+            text="Name",
+            font=("times new roman", 17),
             bg="white",
         )
-        studentName_label.grid(row=0, column=2, padx=30, pady=5, sticky=W)
+        name_label.place(x=10, y=130, anchor=NW)
 
-        studentName_entry = ttk.Entry(
+        name_entry = ttk.Entry(
             teacher_frame,
-            textvariable=self.var_std_name,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_name,
+            width=22,
+            font=("times new roman", 13),
         )
-        studentName_entry.grid(row=0, column=3, padx=0, pady=10, sticky=W)
+        name_entry.place(x=180, y=130, anchor=NW)
 
-        # Batch
-        batch_label = Label(
+        # Phone no.
+        phone_label = Label(
             teacher_frame,
-            text="Batch",
-            font=("times new roman", 17, "bold"),
+            text="Phone No.",
+            font=("times new roman", 17),
             bg="white",
         )
-        batch_label.grid(row=1, column=0, padx=10, pady=5, sticky=W)
+        phone_label.place(x=10, y=230, anchor=NW)
 
-        batch_combo = ttk.Combobox(
+        phone_entry = ttk.Entry(
             teacher_frame,
-            textvariable=self.var_batch,
-            font=("times new roman", 15, "bold"),
-            state="readonly",
-            width=11,
+            # textvariable=self.var_rollNum,
+            width=22,
+            font=("times new roman", 13),
         )
-        batch_combo["values"] = ("Batch", "2CS", "COE", "EE")
-        batch_combo.current(0)  # to give the bydeafault index
-        batch_combo.grid(row=1, column=1, padx=10, pady=10, sticky=W)
-
-        # Batch_No
-        batch_no_label = Label(
-            teacher_frame,
-            text="Batch No",
-            font=("times new roman", 17, "bold"),
-            bg="white",
-        )
-        batch_no_label.grid(row=1, column=2, padx=30, pady=25, sticky=W)
-
-        # batch_no_entry = ttk.Entry(
-        #     class_Student_frame,
-        #     textvariable=self.var_batchNum,
-        #     width=15,
-        #     font=("times new roman", 13, "bold"),
-        # )
-        # batch_no_entry.grid(row=1, column=3, padx=0, pady=10, sticky=W)
-
-        batch_no_combo = ttk.Combobox(
-            teacher_frame,
-            textvariable=self.var_batchNum,
-            font=("times new roman", 15, "bold"),
-            state="readonly",
-            width=11,
-        )
-        batch_no_combo["values"] = ("Batch Num", "9", "10", "11", "12")
-        batch_no_combo.current(0)  # to give the bydeafault index
-        batch_no_combo.grid(row=1, column=3, padx=0, pady=10, sticky=W)
-
-        # Gender
-        gender_label = Label(
-            teacher_frame,
-            text="Gender",
-            font=("times new roman", 17, "bold"),
-            bg="white",
-        )
-        gender_label.grid(row=2, column=0, padx=10, pady=5, sticky=W)
-
-        gender_combo = ttk.Combobox(
-            teacher_frame,
-            textvariable=self.var_gender,
-            font=("times new roman", 15, "bold"),
-            state="readonly",
-            width=11,
-        )
-        gender_combo["values"] = ("Select gender", "Male", "Female", "Others")
-        gender_combo.current(0)  # to give the bydeafault index
-        gender_combo.grid(row=2, column=1, padx=10, pady=10, sticky=W)
-
-        # DOB
-        dob_label = Label(
-            teacher_frame,
-            text="DOB(DD-MM-YYYY)",
-            font=("times new roman", 15, "bold"),
-            bg="white",
-        )
-        dob_label.grid(row=2, column=2, padx=30, pady=20, sticky=W)
-
-        dob_entry = ttk.Entry(
-            teacher_frame,
-            textvariable=self.var_dob,
-            width=15,
-            font=("times new roman", 13, "bold"),
-        )
-        dob_entry.grid(row=2, column=3, padx=0, pady=10, sticky=W)
+        phone_entry.place(x=180, y=230, anchor=NW)
 
         # Email
         email_label = Label(
             teacher_frame,
             text="Email (thapar.edu)",
-            font=("times new roman", 17, "bold"),
+            font=("times new roman", 17),
             bg="white",
         )
-        email_label.grid(row=3, column=0, padx=10, pady=5, sticky=W)
+        email_label.place(x=10, y=350, anchor=NW)
 
         email_entry = ttk.Entry(
             teacher_frame,
-            textvariable=self.var_email,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_rollNum,
+            width=22,
+            font=("times new roman", 13),
         )
-        email_entry.grid(row=3, column=1, padx=10, pady=5, sticky=W)
+        email_entry.place(x=180, y=350, anchor=NW)
 
-        # Phone Number
-        phone_no_label = Label(
+        # course_1 label
+        course_1_label = Label(
             teacher_frame,
-            text="Phone Number",
-            font=("times new roman", 17, "bold"),
+            text="Course - 1",
+            font=("times new roman", 17),
             bg="white",
         )
-        phone_no_label.grid(row=3, column=2, padx=30, pady=20, sticky=W)
+        course_1_label.place(x=380, y=30, anchor=NW)
 
-        phone_no_entry = ttk.Entry(
+        # combo is used for dropdown like entering text
+        course_1_combo = ttk.Combobox(
             teacher_frame,
-            textvariable=self.var_phone,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=18,
         )
-        phone_no_entry.grid(row=3, column=3, padx=0, pady=10, sticky=W)
+        course_1_combo["values"] = (
+            "",
+            "UCS411 - AI",
+            "UCS414 - CN",
+            "UCS310 - DBMS",
+            "UMA035 - OT",
+            "UCS503 - SE",
+        )
+        course_1_combo.current(0)  # to give the bydeafault index
 
-        # Father's Ph.No
-        father_phone_no_label = Label(
+        course_1_combo.place(x=480, y=30, anchor=NW)
+
+        # course_2 label
+        course_2_label = Label(
             teacher_frame,
-            text="Father's Ph.No",
-            font=("times new roman", 17, "bold"),
+            text="Course - 2",
+            font=("times new roman", 17),
             bg="white",
         )
-        father_phone_no_label.grid(row=4, column=0, padx=10, pady=5, sticky=W)
+        course_2_label.place(x=380, y=130, anchor=NW)
 
-        father_phone_no_entry = ttk.Entry(
+        # combo is used for dropdown like entering text
+        course_2_combo = ttk.Combobox(
             teacher_frame,
-            textvariable=self.var_fatherNum,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=18,
         )
-        father_phone_no_entry.grid(row=4, column=1, padx=10, pady=5, sticky=W)
+        course_2_combo["values"] = (
+            "",
+            "UCS411 - AI",
+            "UCS414 - CN",
+            "UCS310 - DBMS",
+            "UMA035 - OT",
+            "UCS503 - SE",
+        )
+        course_2_combo.current(0)  # to give the bydeafault index
 
-        # Mother's Ph.No
-        mother_phone_no_label = Label(
+        course_2_combo.place(x=480, y=130, anchor=NW)
+
+        # course_3 label
+        course_3_label = Label(
             teacher_frame,
-            text="Mother's Ph.No",
-            font=("times new roman", 17, "bold"),
+            text="Course - 3",
+            font=("times new roman", 17),
             bg="white",
         )
-        mother_phone_no_label.grid(row=4, column=2, padx=30, pady=20, sticky=W)
+        course_3_label.place(x=380, y=230, anchor=NW)
 
-        mother_phone_no_entry = ttk.Entry(
+        # combo is used for dropdown like entering text
+        course_3_combo = ttk.Combobox(
             teacher_frame,
-            textvariable=self.var_motherNum,
-            width=15,
-            font=("times new roman", 13, "bold"),
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=18,
         )
-        mother_phone_no_entry.grid(row=4, column=3, padx=0, pady=10, sticky=W)
+        course_3_combo["values"] = (
+            "",
+            "UCS411 - AI",
+            "UCS414 - CN",
+            "UCS310 - DBMS",
+            "UMA035 - OT",
+            "UCS503 - SE",
+        )
+        course_3_combo.current(0)  # to give the bydeafault index
 
-        ##########################################################################
+        course_3_combo.place(x=480, y=230, anchor=NW)
+
+        # gender label
+        gender_label = Label(
+            teacher_frame,
+            text="Gender",
+            font=("times new roman", 17),
+            bg="white",
+        )
+        gender_label.place(x=380, y=350, anchor=NW)
+
+        # combo is used for dropdown like entering text
+        gender_combo = ttk.Combobox(
+            teacher_frame,
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=18,
+        )
+        gender_combo["values"] = ("", "Male", "Female", "Others", "Prefer not to say")
+        gender_combo.current(0)  # to give the bydeafault index
+
+        gender_combo.place(x=480, y=350, anchor=NW)
 
         #########################################################################
 
         # Button Frame
         btn_frame = Frame(teacher_frame, bd=2, relief=RAISED, bg="black")
-        btn_frame.place(x=0, y=385, width=675, height=40)
+        btn_frame.place(x=0, y=420, width=675, height=40)
 
         # Save button in button frame
         save_btn = Button(
@@ -344,7 +332,7 @@ class adminCheckTeacherDetails:
             bd=5,
             bg="white",
             relief=RAISED,
-            text="Student Details",
+            text="",
             font=("times new roman", 12, "bold"),
         )
         Right_frame.place(x=720, y=10, width=745, height=777)

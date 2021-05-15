@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
 
 
-class teacherRegister:
+class adminTeacherRegister:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
@@ -277,5 +277,5 @@ class teacherRegister:
 
 if __name__ == "__main__":
     root = Tk()
-    obj = teacherRegister(root)
+    obj = adminTeacherRegister(root)
     root.mainloop()
