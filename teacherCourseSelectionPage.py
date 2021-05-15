@@ -3,7 +3,7 @@ from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
 
 
-class adminCheckAttendance:
+class teacherCourseSelection:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
@@ -21,22 +21,26 @@ class adminCheckAttendance:
         # title
         title_lbl = Label(
             bg_img,
-            text="CHECK ATTENDANCE",
+            text="TEACHER COURSE SELECTION",
             font=("times new roman", 25, "bold"),
             bg="black",
             fg="white",
         )
         title_lbl.place(x=510, y=160, width=500, height=40)
 
-        # adminCheckAttendance frame
-        attendance_frame = Frame(bg_img, bd=2, bg="white", highlightthickness=5)
-        attendance_frame.place(x=510, y=220, width=500, height=275)
+        # teacherCourseSelection frame
+        teacherCourseSelection_frame = Frame(
+            bg_img, bd=2, bg="white", highlightthickness=5
+        )
+        teacherCourseSelection_frame.place(x=510, y=220, width=500, height=275)
 
-        attendance_frame.config(highlightbackground="black", highlightcolor="black")
+        teacherCourseSelection_frame.config(
+            highlightbackground="black", highlightcolor="black"
+        )
 
         # Year label
         year_label = Label(
-            attendance_frame,
+            teacherCourseSelection_frame,
             text="Year",
             font=("times new roman", 17),
             bg="white",
@@ -45,7 +49,7 @@ class adminCheckAttendance:
 
         # combo is used for dropdown like entering text
         year_combo = ttk.Combobox(
-            attendance_frame,
+            teacherCourseSelection_frame,
             # textvariable=self.var_memType,
             font=("times new roman", 15),
             state="readonly",
@@ -58,7 +62,7 @@ class adminCheckAttendance:
 
         # Semester label
         semester_label = Label(
-            attendance_frame,
+            teacherCourseSelection_frame,
             text="Semester",
             font=("times new roman", 17),
             bg="white",
@@ -67,7 +71,7 @@ class adminCheckAttendance:
 
         # combo is used for dropdown like entering text
         semester_combo = ttk.Combobox(
-            attendance_frame,
+            teacherCourseSelection_frame,
             # textvariable=self.var_memType,
             font=("times new roman", 15),
             state="readonly",
@@ -90,7 +94,7 @@ class adminCheckAttendance:
 
         # Batch label
         batch_label = Label(
-            attendance_frame,
+            teacherCourseSelection_frame,
             text="Batch",
             font=("times new roman", 17),
             bg="white",
@@ -99,7 +103,7 @@ class adminCheckAttendance:
 
         # combo is used for dropdown like entering text
         batch_combo = ttk.Combobox(
-            attendance_frame,
+            teacherCourseSelection_frame,
             # textvariable=self.var_memType,
             font=("times new roman", 15),
             state="readonly",
@@ -112,7 +116,7 @@ class adminCheckAttendance:
 
         # course label
         course_label = Label(
-            attendance_frame,
+            teacherCourseSelection_frame,
             text="Course",
             font=("times new roman", 17),
             bg="white",
@@ -121,7 +125,7 @@ class adminCheckAttendance:
 
         # combo is used for dropdown like entering text
         course_combo = ttk.Combobox(
-            attendance_frame,
+            teacherCourseSelection_frame,
             # textvariable=self.var_memType,
             font=("times new roman", 15),
             state="readonly",
@@ -141,22 +145,22 @@ class adminCheckAttendance:
 
         # ---- button ----#
 
-        # adminCheckAttendance button
-        adminCheckAttendance_btn = Button(
+        # teacherCourseSelection button
+        teacherCourseSelection_btn = Button(
             bg_img,
             # command=self.add_data,
             width=27,
             height=2,
-            text="EXPORT ATTENDANCE",
-            font=("times new roman", 15, "bold"),
+            text="PROCEED",
+            font=("times new roman", 18, "bold"),
             bg="white",
             fg="black",
         )
 
-        adminCheckAttendance_btn.place(x=650, y=520, anchor=NW)
+        teacherCourseSelection_btn.place(x=650, y=520, anchor=NW)
 
 
 if __name__ == "__main__":
     root = Tk()
-    obj = adminCheckAttendance(root)
+    obj = teacherCourseSelection(root)
     root.mainloop()

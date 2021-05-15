@@ -30,7 +30,7 @@ class login:
 
         # login frame
         login_frame = Frame(bg_img, bd=2, bg="white", highlightthickness=5)
-        login_frame.place(x=510, y=220, width=500, height=320)
+        login_frame.place(x=510, y=220, width=500, height=360)
 
         login_frame.config(highlightbackground="black", highlightcolor="black")
 
@@ -43,6 +43,33 @@ class login:
             fg="red",
         )
         account_label.grid(row=0, column=0, padx=0)
+
+        # memberType label
+        memType_label = Label(
+            login_frame,
+            text="Member Type",
+            font=("times new roman", 17),
+            bg="white",
+        )
+        memType_label.place(x=50, y=250, anchor=NW)
+
+        # combo is used for dropdown like entering text
+        memType_combo = ttk.Combobox(
+            login_frame,
+            # textvariable=self.var_memType,
+            font=("times new roman", 15),
+            state="readonly",
+            width=17,
+        )
+        memType_combo["values"] = (
+            "",
+            "Student",
+            "Teacher",
+            "Admin",
+        )
+        memType_combo.current(0)  # to give the bydeafault index
+
+        memType_combo.place(x=275, y=250, anchor=NW)
 
         # Email
         email_label = Label(
@@ -139,7 +166,7 @@ class login:
             fg="black",
         )
 
-        update_btn.place(x=50, y=250, anchor=NW)
+        update_btn.place(x=50, y=300, anchor=NW)
 
     # ---- functions -----#
 
