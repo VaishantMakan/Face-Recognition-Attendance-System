@@ -135,7 +135,9 @@ __pycache__
 
 # JPEG
 *.jpg
+!/Images/*.jpg
 *.jpeg
+!/Images/*.jpeg
 *.jpe
 *.jif
 *.jfif
@@ -143,6 +145,7 @@ __pycache__
 
 # Portable Network Graphics
 *.png
+!/Images/*.png
 
 # Portable Document Format
 *.pdf
