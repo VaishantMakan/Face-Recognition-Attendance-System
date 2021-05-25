@@ -3,23 +3,50 @@ from tkinter import ttk
 import tkinter  # ttk is used for styling
 from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
+from tkinter import messagebox
+
+import numpy as np
+import cv2
+import mysql.connector
+import os
 
 
-class adminStudentRegister:
+class studentRegister:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
 
         # ======= Variables ============
-        self.var_rollNum = StringVar()
-        self.var_name = StringVar()
-
         self.defaultDob = StringVar()
         self.defaultDob.set("Choose Date")
 
         self.dobDate = StringVar()
         self.dobDate.set("")
+
+        ################################################################
+        self.var_rollNum = StringVar()
+        self.var_name = StringVar()
+        self.var_year = StringVar()
+        self.var_semester = StringVar()
+        self.var_dep = (
+            StringVar()
+        )  # department --------------------- StringVar is used in tkinter and it is a class whose function is get()
+        self.var_batch = StringVar()
+        self.var_email = StringVar()
+        self.var_phone = StringVar()
+        self.var_password = StringVar()
+        self.var_confirm_password = StringVar()
+        # self.var_dob = StringVar()
+        self.var_fatherNum = StringVar()
+        self.var_motherNum = StringVar()
+        self.var_gender = StringVar()
+        self.var_course1 = StringVar()
+        self.var_course2 = StringVar()
+        self.var_course3 = StringVar()
+        self.var_course4 = StringVar()
+
+        ###############################################################
 
         # img1 = main background
         img1 = Image.open("Images/bg2.jpeg")
@@ -92,12 +119,12 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         year_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_year,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
-        year_combo["values"] = ("", "I", "II", "III", "IV")
+        year_combo["values"] = ("Select Year", "I", "II", "III", "IV")
         year_combo.current(0)  # to give the bydeafault index
 
         year_combo.place(x=245, y=150, anchor=NW)
@@ -114,13 +141,13 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         semester_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_semester,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
         semester_combo["values"] = (
-            "",
+            "Select Semester",
             "I",
             "II",
             "III",
@@ -146,12 +173,12 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         dep_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_dep,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
-        dep_combo["values"] = ("", "COE", "CSE", "COBS", "EE")
+        dep_combo["values"] = ("Select Department", "COE", "CSE", "COBS", "EE")
         dep_combo.current(0)  # to give the bydeafault index
 
         dep_combo.place(x=245, y=270, anchor=NW)
@@ -168,12 +195,12 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         batch_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_batch,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
-        batch_combo["values"] = ("", "2CS9", "2CS10", "2CS11", "2CS12")
+        batch_combo["values"] = ("Select Batch", "2EE9", "2CS10", "2CS11", "2CS12")
         batch_combo.current(0)  # to give the bydeafault index
 
         batch_combo.place(x=245, y=330, anchor=NW)
@@ -189,7 +216,7 @@ class adminStudentRegister:
 
         email_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_email,
             width=22,
             font=("times new roman", 13),
         )
@@ -206,7 +233,7 @@ class adminStudentRegister:
 
         phone_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_phone,
             width=22,
             font=("times new roman", 13),
         )
@@ -223,7 +250,7 @@ class adminStudentRegister:
 
         pass_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_password,
             width=22,
             font=("times new roman", 13),
         )
@@ -243,18 +270,19 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         course_1_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course1,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
         course_1_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_1_combo.current(0)  # to give the bydeafault index
 
@@ -272,18 +300,19 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         course_2_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course2,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
         course_2_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_2_combo.current(0)  # to give the bydeafault index
 
@@ -301,18 +330,19 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         course_3_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course3,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
         course_3_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_3_combo.current(0)  # to give the bydeafault index
 
@@ -330,18 +360,19 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         course_4_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course4,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
         course_4_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_4_combo.current(0)  # to give the bydeafault index
 
@@ -359,7 +390,7 @@ class adminStudentRegister:
         # combo is used for dropdown like entering text
         gender_combo = ttk.Combobox(
             register_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_gender,
             font=("times new roman", 15),
             state="readonly",
             width=18,
@@ -403,7 +434,7 @@ class adminStudentRegister:
 
         fatherNum_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_fatherNum,
             width=22,
             font=("times new roman", 13),
         )
@@ -420,7 +451,7 @@ class adminStudentRegister:
 
         motherNum_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_motherNum,
             width=22,
             font=("times new roman", 13),
         )
@@ -437,7 +468,7 @@ class adminStudentRegister:
 
         confirmPass_entry = ttk.Entry(
             register_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_confirm_password,
             width=22,
             font=("times new roman", 13),
         )
@@ -448,7 +479,7 @@ class adminStudentRegister:
         # uploadPhoto button
         uploadPhoto_btn = Button(
             register_frame,
-            # command=self.add_data,
+            command=self.take_photo,
             width=50,
             height=2,
             text="Upload Photo Sample",
@@ -462,7 +493,7 @@ class adminStudentRegister:
         # save button
         save_btn = Button(
             register_frame,
-            # command=self.add_data,
+            command=self.add_data,
             width=25,
             height=2,
             text="Save Details",
@@ -507,8 +538,264 @@ class adminStudentRegister:
         date = Label(rootNew, text="")
         date.pack(pady=20)
 
+    def add_data(
+        self,
+    ):  # Add this in 'save' button, so that this functinality will work for the 'save' button
+        if (
+            self.var_rollNum.get() == ""
+            or self.var_name.get() == ""
+            or self.var_year.get() == "Select Year"
+            or self.var_semester.get() == "Select Semester"
+            or self.var_dep.get() == "Select Department"
+            or self.var_batch.get() == "Select Batch"
+            or self.var_email.get() == ""
+            or self.var_phone.get() == ""
+            or self.var_fatherNum.get() == ""
+            or self.var_motherNum.get() == ""
+            or self.var_password.get() == ""
+            or self.var_confirm_password.get() == ""
+            or self.var_course1.get() == "Select Course"
+            or self.var_course2.get() == "Select Course"
+            or self.var_course3.get() == "Select Course"
+            or self.var_course4.get() == "Select Course"
+            or self.var_gender.get() == ""
+            or self.defaultDob.get() == "Choose Date"
+        ):
+            messagebox.showerror(
+                "Error", "All Fields are required", parent=self.root
+            )  # Messagebox to show the error and parent=self.root to show the message in the same window is any of the fields would be missing
+
+        else:  # Ab agar data aa jata hai to usse database mein save karna hai
+            temp_pass = self.var_password.get()
+            temp_confirm_pass = self.var_confirm_password.get()
+
+            if str(temp_pass) == str(temp_confirm_pass):
+                try:  # Now we will connect with SQL
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        password="ShadowWalker77",
+                        database="face_recognition_db",
+                        auth_plugin="mysql_native_password",
+                    )
+                    my_cursor = conn.cursor()  # To store the values given by the user
+                    my_cursor.execute(
+                        "insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (
+                            self.var_rollNum.get(),
+                            self.var_name.get(),
+                            self.var_year.get(),
+                            self.var_semester.get(),
+                            self.var_dep.get(),
+                            self.var_batch.get(),
+                            self.var_email.get(),
+                            self.var_phone.get(),
+                            self.var_fatherNum.get(),
+                            self.var_motherNum.get(),
+                            self.var_password.get(),
+                            self.var_course1.get(),
+                            self.var_course2.get(),
+                            self.var_course3.get(),
+                            self.var_course4.get(),
+                            self.var_gender.get(),
+                            self.defaultDob.get(),
+                        ),
+                    )
+                    conn.commit()
+                    # self.fetch_data()
+                    conn.close()  # Closing teh connection
+                # messagebox.showinfo("Success","Student details have been added successfully", parent=self.root,) # To showthe sccess message on parent which is self.root
+
+                except Exception as es:
+                    messagebox.showerror(
+                        "Error", f"Due to : {str(es)}", parent=self.root
+                    )
+
+                #########################################################
+                temp_var = self.var_year.get() + "_" + self.var_batch.get()
+
+                temp_roll = "'" + self.var_rollNum.get() + "'"
+                temp_name = "'" + self.var_name.get() + "'"
+                temp_year = "'" + self.var_year.get() + "'"
+                temp_sem = "'" + self.var_semester.get() + "'"
+                temp_dep = "'" + self.var_dep.get() + "'"
+                temp_batch = "'" + self.var_batch.get() + "'"
+                temp_email = "'" + self.var_email.get() + "'"
+                temp_phone = "'" + self.var_phone.get() + "'"
+                temp_fatherNum = "'" + self.var_fatherNum.get() + "'"
+                temp_motherNum = "'" + self.var_motherNum.get() + "'"
+                temp_course1 = "'" + self.var_course1.get() + "'"
+                temp_course2 = "'" + self.var_course2.get() + "'"
+                temp_course3 = "'" + self.var_course3.get() + "'"
+                temp_course4 = "'" + self.var_course4.get() + "'"
+                temp_gender = "'" + self.var_gender.get() + "'"
+                temp_dob = "'" + self.defaultDob.get() + "'"
+
+                try:  # Now we will connect with SQL
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        password="ShadowWalker77",
+                        database="face_recognition_db",
+                        auth_plugin="mysql_native_password",
+                    )
+                    my_cursor = conn.cursor()  # To store the values given by the user
+                    sql = "insert into {} values({},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(
+                        str(temp_var),
+                        temp_roll,
+                        temp_name,
+                        temp_year,
+                        temp_sem,
+                        temp_dep,
+                        temp_batch,
+                        temp_email,
+                        temp_phone,
+                        temp_fatherNum,
+                        temp_motherNum,
+                        temp_course1,
+                        temp_course2,
+                        temp_course3,
+                        temp_course4,
+                        temp_gender,
+                        temp_dob,
+                    )
+                    print(sql)
+                    my_cursor.execute(sql)
+                    conn.commit()
+                    # self.fetch_data()
+                    conn.close()  # Closing teh connection
+                    messagebox.showinfo(
+                        "Success",
+                        "Student details have been added successfully",
+                        parent=self.root,
+                    )  # To showthe sccess message on parent which is self.root
+
+                except Exception as es:
+                    messagebox.showerror(
+                        "Error", f"Due to : {str(es)}", parent=self.root
+                    )
+
+                ###########################3333333333333333333333333333333333333333333333333333333
+                temp_var1 = self.var_course1.get()
+                temp_var2 = self.var_course2.get()
+                temp_var3 = self.var_course3.get()
+                temp_var4 = self.var_course4.get()
+                li = [temp_var1, temp_var2, temp_var3, temp_var4]
+
+                temp_year = self.var_year.get()
+                temp_batch = self.var_batch.get()
+
+                for i in li:
+                    temp_var = temp_year + "_" + temp_batch + "_" + str(i)
+                    try:  # Now we will connect with SQL
+                        conn = mysql.connector.connect(
+                            host="localhost",
+                            user="root",
+                            password="ShadowWalker77",
+                            database="face_recognition_db",
+                            auth_plugin="mysql_native_password",
+                        )
+                        my_cursor = (
+                            conn.cursor()
+                        )  # To store the values given by the user
+                        my_cursor.execute(
+                            "insert into {} values({})".format(
+                                temp_var, self.var_rollNum.get()
+                            ),
+                        )
+                        conn.commit()
+                        # self.fetch_data()
+                        conn.close()  # Closing teh connection
+                        # messagebox.showinfo("Success","Student details have been added successfully", parent=self.root,) # To showthe sccess message on parent which is self.root
+
+                    except Exception as es:
+                        messagebox.showerror(
+                            "Error", f"Due to : {str(es)}", parent=self.root
+                        )
+
+            else:
+                messagebox.showerror(
+                    "Error", "Both passwords does not match", parent=self.root
+                )
+
+    # =========================take photo sample==========================================#
+    def take_photo(self):
+        if (
+            self.var_rollNum.get() == ""
+            or self.var_name.get() == ""
+            or self.var_year.get() == "Select Year"
+            or self.var_semester.get() == "Select Semester"
+            or self.var_dep.get() == "Select Department"
+            or self.var_batch.get() == "Select Batch"
+            or self.var_email.get() == ""
+            or self.var_phone.get() == ""
+            or self.var_fatherNum.get() == ""
+            or self.var_motherNum.get() == ""
+            or self.var_password.get() == ""
+            or self.var_confirm_password.get() == ""
+            or self.var_course1.get() == "Select Course"
+            or self.var_course2.get() == "Select Course"
+            or self.var_course3.get() == "Select Course"
+            or self.var_course4.get() == "Select Course"
+            or self.var_gender.get() == ""
+            or self.defaultDob.get() == "Choose Date"
+        ):
+            messagebox.showerror("Error", "All Fields are required", parent=self.root)
+        else:
+            cam = cv2.VideoCapture(0)
+            cam.set(3, 640)  # set video width
+            cam.set(4, 480)  # set video height
+            temp1 = self.var_rollNum.get()
+
+            face_detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+            count = 0
+
+            while True:
+
+                ret, img = cam.read()
+                # img = cv2.flip(img, -1) # flip video image vertically
+                if ret == False:
+                    continue
+
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                faces = face_detector.detectMultiScale(gray, 1.3, 5)
+                # 1.3 - Scaling Factors
+                # 5 - Minimum neighbours
+
+                for (x, y, w, h) in faces:
+
+                    cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                    count += 1
+
+                    # Save the captured image into the datasets folder
+                    cv2.imwrite(
+                        "dataset/" + str(temp1) + "." + str(count) + ".jpg",
+                        gray[y : y + h, x : x + w],
+                    )
+                    cv2.putText(
+                        img,
+                        str(count),
+                        (50, 50),
+                        cv2.FONT_HERSHEY_COMPLEX,
+                        2,
+                        (0, 255, 0),
+                        2,
+                    )
+
+                    cv2.imshow("image", img)
+
+                k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
+                if k == 27:  # escape key ASCII Value
+                    break
+                elif count >= 100:  # Take 100 face sample and stop video
+                    break
+
+            cam.release()
+            cv2.destroyAllWindows()
+
 
 if __name__ == "__main__":
     root = Tk()
-    obj = adminStudentRegister(root)
+    obj = studentRegister(root)
     root.mainloop()
