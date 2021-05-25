@@ -1,15 +1,22 @@
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
+from tkinter import messagebox
+import mysql.connector
+from teacherMainPage import teacherMainPage
 
 
 class teacherCourseSelection:
-    def __init__(self, root):
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
-
+        self.mydata = data
         # ======= Variables ============
+        self.var_year = StringVar()
+        self.var_sem = StringVar()
+        self.var_batch = StringVar()
+        self.var_course = StringVar()
 
         # img1 = main background
         img1 = Image.open("Images/Harvey.jpeg")
@@ -50,7 +57,7 @@ class teacherCourseSelection:
         # combo is used for dropdown like entering text
         year_combo = ttk.Combobox(
             teacherCourseSelection_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_year,
             font=("times new roman", 15),
             state="readonly",
             width=18,
@@ -72,7 +79,7 @@ class teacherCourseSelection:
         # combo is used for dropdown like entering text
         semester_combo = ttk.Combobox(
             teacherCourseSelection_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_sem,
             font=("times new roman", 15),
             state="readonly",
             width=18,
@@ -104,12 +111,12 @@ class teacherCourseSelection:
         # combo is used for dropdown like entering text
         batch_combo = ttk.Combobox(
             teacherCourseSelection_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_batch,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
-        batch_combo["values"] = ("", "2CS9", "2CS10", "2CS11", "2CS12")
+        batch_combo["values"] = ("", "2EE9", "2CS10", "2CS11", "2CS12")
         batch_combo.current(0)  # to give the bydeafault index
 
         batch_combo.place(x=275, y=150, anchor=NW)
@@ -126,18 +133,18 @@ class teacherCourseSelection:
         # combo is used for dropdown like entering text
         course_combo = ttk.Combobox(
             teacherCourseSelection_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course,
             font=("times new roman", 15),
             state="readonly",
             width=18,
         )
+
+        li = []
         course_combo["values"] = (
             "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            data[5],
+            data[6],
+            data[7],
         )
         course_combo.current(0)  # to give the bydeafault index
 
@@ -148,7 +155,7 @@ class teacherCourseSelection:
         # teacherCourseSelection button
         teacherCourseSelection_btn = Button(
             bg_img,
-            # command=self.add_data,
+            command=self.course_selection,
             width=27,
             height=2,
             text="PROCEED",
@@ -158,6 +165,28 @@ class teacherCourseSelection:
         )
 
         teacherCourseSelection_btn.place(x=650, y=520, anchor=NW)
+
+    ################################3function =========================
+    def course_selection(self):
+        if (
+            self.var_course.get() == ""
+            or self.var_batch.get() == ""
+            or self.var_sem.get() == ""
+            or self.var_year.get() == ""
+        ):
+            messagebox.showerror("Error", "All Fields are required", parent=self.root)
+
+        else:
+            data = [
+                self.var_year.get(),
+                self.var_sem.get(),
+                self.var_batch.get(),
+                self.var_course.get(),
+            ]
+            self.new_window = Toplevel(
+                self.root
+            )  # This asks where we want to open our window
+            self.app = teacherMainPage(self.new_window, data)
 
 
 if __name__ == "__main__":

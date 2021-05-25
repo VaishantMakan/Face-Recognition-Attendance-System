@@ -11,11 +11,11 @@ from datetime import datetime
 
 
 class Face_Recognition:
-    def __init__(self, root):
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
-
+        self.mydata = data
         title_lbl = Label(
             self.root,
             text="MARK ATTENDANCE",
@@ -51,28 +51,69 @@ class Face_Recognition:
         )
         b1_1.place(x=365, y=765, width=150, height=40)
 
-    # ==================Attendance =============================
-    def mark_attendance(self, i):
-        with open("attendance.csv", "r+", newline="\n") as f:
-            myDataList = f.readlines()
-            name_list = []
-            for line in myDataList:
-                entry = line.split(",")
-                name_list.append(entry[0])
-                print(name_list)
+    # ====================create date=============================#
 
-            if str(i) not in name_list:
-                now = datetime.now()
-                d1 = now.strftime("%d/%m/%Y")
-                dtString = now.strftime("%H:%M:%S")
-                f.writelines(f"\n{i},{dtString},{d1},Present")
+    def create_date(self, batch, d1):
+        try:
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ShadowWalker77",
+                database="face_recognition_db",
+                auth_plugin="mysql_native_password",
+            )
 
-    # ==================Face Recognition =========================
+            string = "alter table {} add {} varchar(100) DEFAULT 'Absent' ".format(
+                str(batch), str(d1)
+            )
+            print(string)
+            my_cursor = conn.cursor()
+            my_cursor.execute(string)
+
+            conn.commit()
+            conn.close()
+        except mysql.connector.Error as e:
+            print(e)
+
+    # =====================mark attendance=======================#
+
+    def mark__attendance(self, roll_num, batch, d1):
+        try:
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ShadowWalker77",
+                database="face_recognition_db",
+                auth_plugin="mysql_native_password",
+            )
+            # query="UPDATE cn_2cs10 SET email = 'present' WHERE roll_no = %s "
+            roll_num = "'" + str(roll_num) + "'"
+            string = "UPDATE {} SET {} = {} WHERE enroll_no = {} ".format(
+                str(batch), str(d1), str("'present'"), str(roll_num)
+            )
+            print(string)
+            my_cursor = conn.cursor()
+            my_cursor.execute(string)
+
+            conn.commit()
+            conn.close()
+        except mysql.connector.Error as e:
+            print(e)
+
+    # ==================Face Recognition =========================#
     def face_recog(self):
         recognizer = cv2.face.LBPHFaceRecognizer_create()
         recognizer.read("trainer/trainer.yml")
         cascadePath = "haarcascade_frontalface_default.xml"
         faceCascade = cv2.CascadeClassifier(cascadePath)
+        year = self.mydata[0]
+        batch = self.mydata[2]
+        course = self.mydata[3]
+        table_name = year + "_" + batch + "_" + course
+        print(table_name)
+        now = datetime.now()
+        d1 = now.strftime("_%d_%m_%Y_%H_%M")
+        self.create_date(table_name, d1)
 
         font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -111,57 +152,15 @@ class Face_Recognition:
 
                 id, confidence = recognizer.predict(gray[y : y + h, x : x + w])
 
-                # conn = mysql.connector.connect(
-                #     host="localhost",
-                #     user="root",
-                #     password="ShadowWalker77",
-                #     database="Face_Recognition_db",
-                #     auth_plugin="mysql_native_password",
-                # )
-                # my_cursor = conn.cursor()
-                # my_cursor.execute(
-                #     "select std_name from student_table where rollNum=" + str(id)
-                # )
-                # n = my_cursor.fetchone()
-                # n = "+".join(n)
-
-                # my_cursor.execute(
-                #     "select batch from student_table where rollNum=" + str(id)
-                # )
-                # b = my_cursor.fetchone()
-                # b = "+".join(b)
-
-                # my_cursor.execute(
-                #     "select batch_num from student_table where rollNum=" + str(id)
-                # )
-                # bn = my_cursor.fetchone()
-                # bn = "+".join(str(bn))
-
                 # Check if confidence is less them 100 ==> "0" is perfect match
                 if confidence < 77:
                     confidence = "  {0}%".format(round(100 - confidence))
-                    self.mark_attendance(id)
+                    self.mark__attendance(id, table_name, d1)
                 else:
                     id = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
 
                 cv2.putText(img, str(id), (x + 5, y - 5), font, 1, (255, 255, 255), 2)
-
-                # cv2.putText(
-                #     img, f"Name: {n}", (x + 5, y - 2), font, 0.6, (255, 255, 255), 2
-                # )
-                # cv2.putText(
-                #     img, f"Roll: {id}", (x + 5, y - 7), font, 0.6, (255, 255, 255), 2
-                # )
-                # cv2.putText(
-                #     img,
-                #     f"Batch: {b}{bn}",
-                #     (x + 5, y - 12),
-                #     font,
-                #     0.6,
-                #     (255, 255, 255),
-                #     2,
-                # )
 
                 cv2.putText(
                     img, str(confidence), (x + 5, y + h - 5), font, 1, (255, 255, 0), 1

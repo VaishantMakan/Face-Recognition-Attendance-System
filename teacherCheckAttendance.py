@@ -1,58 +1,39 @@
 import numpy as np
 import cv2
-
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
 from tkinter import messagebox
+import pandas as pd
 import mysql.connector
 import os
+from tkinter import filedialog
 
 
-class Student:
-    def __init__(self, root):
+class Student_attendance:
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
 
         # ======= Variables ============
-        self.var_rollNum = StringVar()
-        self.var_name = StringVar()
-        var_rollNumText = StringVar()
-        var_nameText = StringVar()
-        var_yearText = StringVar()
-        var_semesterText = StringVar()
-        var_depText = StringVar()
-        var_batchText = StringVar()
-        var_emailText = StringVar()
-        var_phoneText = StringVar()
-        var_course1Text = StringVar()
-        var_course2Text = StringVar()
-        var_course3Text = StringVar()
-        var_course4Text = StringVar()
-        var_dobText = StringVar()
-        var_genderText = StringVar()
-        var_fatherText = StringVar()
-        var_motherText = StringVar()
-
-        # self.var_rollNum.set("101916054")
-        # self.var_name.set("Hello")
-        # var_rollNumText.set("Hello")
-        # var_nameText.set("Hello")
-        # var_yearText.set("Hello")
-        # var_semesterText.set("Hello")
-        # var_depText.set("Hello")
-        # var_batchText.set("Hello")
-        # var_emailText.set("vmakan_be19@thapar.edu")
-        # var_phoneText.set("Hello")
-        # var_course1Text.set("Hello")
-        # var_course2Text.set("Hello")
-        # var_course3Text.set("Hello")
-        # var_course4Text.set("Hello")
-        # var_dobText.set("11-12-2000")
-        # var_genderText.set("Hello")
-        # var_fatherText.set("Hello")
-        # var_motherText.set("Hello")
+        self.var_rollNumText = StringVar()
+        self.var_nameText = StringVar()
+        self.var_yearText = StringVar()
+        self.var_semesterText = StringVar()
+        self.var_depText = StringVar()
+        self.var_batchText = StringVar()
+        self.var_emailText = StringVar()
+        self.var_phoneText = StringVar()
+        self.var_course1Text = StringVar()
+        self.var_course2Text = StringVar()
+        self.var_course3Text = StringVar()
+        self.var_course4Text = StringVar()
+        self.var_dobText = StringVar()
+        self.var_genderText = StringVar()
+        self.var_fatherText = StringVar()
+        self.var_motherText = StringVar()
+        self.mydata = data
 
         # img1 = main background
         img1 = Image.open("Images/wall.jpeg")
@@ -60,6 +41,11 @@ class Student:
         self.photoimg1 = ImageTk.PhotoImage(img1)
         bg_img = Label(self.root, image=self.photoimg1)
         bg_img.place(x=0, y=0, width=1550, height=900)
+
+        self.var_roll = StringVar()
+        self.var_status = StringVar()
+        self.var_date = StringVar()
+        self.var_time = StringVar()
 
         # title
         title_lbl = Label(
@@ -109,7 +95,7 @@ class Student:
 
         rollNum_entry = ttk.Entry(
             upper_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_roll,
             width=22,
             font=("times new roman", 13),
         )
@@ -118,7 +104,7 @@ class Student:
         # date
         date_label = Label(
             upper_frame,
-            text="Date  (dd/mm/yyyy)",
+            text="Date  (_dd_mm_yyyy)",
             font=("times new roman", 17),
             bg="white",
         )
@@ -126,7 +112,7 @@ class Student:
 
         date_entry = ttk.Entry(
             upper_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_date,
             width=22,
             font=("times new roman", 13),
         )
@@ -144,7 +130,7 @@ class Student:
         # combo is used for dropdown like entering text
         status_combo = ttk.Combobox(
             upper_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_status,
             font=("times new roman", 15),
             state="readonly",
             width=18,
@@ -157,15 +143,23 @@ class Student:
         # time
         time_label = Label(
             upper_frame,
-            text="Time (hh:mm) ",
+            text="Time (hh_mm)",
             font=("times new roman", 17),
             bg="white",
         )
-        time_label.place(x=10, y=190, anchor=NW)
+        time_label.place(x=9, y=170, anchor=NW)
+
+        timeFormat_label = Label(
+            upper_frame,
+            text="(24 hour format) ",
+            font=("times new roman", 16),
+            bg="white",
+        )
+        timeFormat_label.place(x=11, y=190, anchor=NW)
 
         time_entry = ttk.Entry(
             upper_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_time,
             width=22,
             font=("times new roman", 13),
         )
@@ -175,6 +169,7 @@ class Student:
 
         updateAttendance_btn = Button(
             upper_frame,
+            command=self.update_attendance,
             width=20,
             height=3,
             text="Update Student\n  Attendance",
@@ -222,20 +217,25 @@ class Student:
         # search_label.grid(row=0, column=0, padx=10, pady=20, sticky=W)
         search_label.place(x=10, y=17)
 
-        search_combo = ttk.Combobox(
+        year_combo = ttk.Combobox(
             Search_frame,
             font=("times new roman", 13, "bold"),
             state="readonly",
-            width=15,
+            width=17,
         )
-        search_combo["values"] = ("Select", "Roll No", "Phone No")
-        search_combo.current(0)  # to give the bydeafault index
-        search_combo.place(x=230, y=20)
+        year_combo["values"] = ("Select Year", "I", "II", "III", "IV")
+        year_combo.current(0)  # to give the bydeafault index
+        year_combo.place(x=230, y=20)
 
-        search_entry = ttk.Entry(
-            Search_frame, width=25, font=("times new roman", 13, "bold")
+        batch_combo = ttk.Combobox(
+            Search_frame,
+            font=("times new roman", 13, "bold"),
+            state="readonly",
+            width=17,
         )
-        search_entry.place(x=450, y=20)
+        batch_combo["values"] = ("Select Batch", "2CS9", "2CS10", "2CS11", "2CS12")
+        batch_combo.current(0)  # to give the bydeafault index
+        batch_combo.place(x=450, y=20)
 
         # Buttons
         search_btn = Button(
@@ -260,6 +260,7 @@ class Student:
 
         exportAll_btn = Button(
             Search_frame,
+            command=self.export_data,
             width=20,
             text="Export All Attendance",
             font=("time new roman", 15, "bold"),
@@ -269,31 +270,16 @@ class Student:
         exportAll_btn.place(x=1200, y=20)
 
         # =========Table frame=================
+
         table_frame = Frame(lower_frame, bd=3, bg="white", relief=SUNKEN)
-        table_frame.place(x=5, y=100, width=1450, height=395)
+        table_frame.place(x=5, y=100, width=1450, height=300)
 
         scroll_x = ttk.Scrollbar(table_frame, orient=HORIZONTAL)
         scroll_y = ttk.Scrollbar(table_frame, orient=VERTICAL)
-
+        tup = self.get_columns()
         self.student_table = ttk.Treeview(
             table_frame,
-            column=(
-                "dep",
-                "course",
-                "year",
-                "sem",
-                "roll_no",
-                "name",
-                "batch",
-                "batch_no",
-                "gender",
-                "DOB",
-                "email",
-                "phone_no",
-                "Father_contact",
-                "Mother_contact",
-                "photo",
-            ),
+            column=tup,
             xscrollcommand=scroll_x.set,
             yscrollcommand=scroll_y.set,
         )
@@ -306,47 +292,24 @@ class Student:
 
         scroll_y.config(command=self.student_table.yview)
 
-        self.student_table.heading("dep", text="Department")
-        self.student_table.heading("course", text="Course")
-        self.student_table.heading("year", text="Year")
-        self.student_table.heading("sem", text="Semester")
-        self.student_table.heading("roll_no", text="Roll No")
-        self.student_table.heading("name", text="Student Name")
-        self.student_table.heading("batch", text="Batch")
-        self.student_table.heading("batch_no", text="Batch No")
-        self.student_table.heading("gender", text="Gender")
-        self.student_table.heading("DOB", text="DOB(DD-MM-YYYY")
-        self.student_table.heading("email", text="Email (thapar.edu)")
-        self.student_table.heading("phone_no", text="Phone Number")
-        self.student_table.heading("Father_contact", text="Father's Ph.No")
-        self.student_table.heading("Mother_contact", text="Mother's Ph.No")
-        self.student_table.heading("photo", text="PhotoSampleStatus")
+        for i in range(len(tup)):
+            self.student_table.heading(tup[i], text=tup[i])
+
         self.student_table["show"] = "headings"
 
-        self.student_table.column("dep", width=120)
-        self.student_table.column("course", width=120)
-        self.student_table.column("year", width=120)
-        self.student_table.column("sem", width=120)
-        self.student_table.column("roll_no", width=120)
-        self.student_table.column("name", width=120)
-        self.student_table.column("batch", width=120)
-        self.student_table.column("batch_no", width=120)
-        self.student_table.column("gender", width=120)
-        self.student_table.column("DOB", width=150)
-        self.student_table.column("email", width=220)
-        self.student_table.column("phone_no", width=120)
-        self.student_table.column("Father_contact", width=120)
-        self.student_table.column("Mother_contact", width=120)
-        self.student_table.column("photo", width=200)
-
         self.student_table.pack(fill=BOTH, expand=1)
-        self.student_table.bind("<ButtonRelease>", self.get_cursor)
+
         self.fetch_data()
 
     # ============================== Function Declaration ===================================#
 
     # =======================fetch data =================== #
-    def fetch_data(self):
+
+    def get_columns(self):
+        year = self.mydata[0]
+        batch = self.mydata[2]
+        course = self.mydata[3]
+        table_name = year + "_" + batch + "_" + course
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
@@ -355,7 +318,33 @@ class Student:
             auth_plugin="mysql_native_password",
         )
         my_cursor = conn.cursor()
-        my_cursor.execute("select * from student_table")
+        sql1 = "select * from {}".format(str(table_name))
+        # my_cursor.execute(sql1)
+        df = pd.read_sql(sql1, con=conn)
+        # data = my_cursor.fetchall()
+        conn.commit()
+        conn.close()
+        column = df.columns
+        tup = tuple(column)
+        # print(tup)
+        return tup
+
+    def fetch_data(self):
+        year = self.mydata[0]
+        batch = self.mydata[2]
+        course = self.mydata[3]
+        table_name = year + "_" + batch + "_" + course
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="ShadowWalker77",
+            database="Face_Recognition_db",
+            auth_plugin="mysql_native_password",
+        )
+        my_cursor = conn.cursor()
+        sql1 = "select * from {}".format(str(table_name))
+        my_cursor.execute(sql1)
+        # df=pd.read_sql(sql1,con=conn)
         data = my_cursor.fetchall()
 
         if len(data) != 0:
@@ -369,33 +358,106 @@ class Student:
         conn.commit()
         conn.close()
 
-    # ======================= get cursor =================#
+    def update_attendance(self):
+        rol = self.var_roll.get()
+        rol = "'" + rol + "'"
+        year = self.mydata[0]
+        batch = self.mydata[2]
+        course = self.mydata[3]
+        table_name = year + "_" + batch + "_" + course
+        d1 = self.var_date.get() + "_" + self.var_time.get()
+        status = self.var_status.get()
+        status = "'" + status + "'"
 
-    def get_cursor(self, event=""):
-        cursor_focus = self.student_table.focus()
-        content = self.student_table.item(cursor_focus)
-        data = content["values"]
+        try:
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ShadowWalker77",
+                database="face_recognition_db",
+                auth_plugin="mysql_native_password",
+            )
 
-        self.var_dep.set(data[0]),
-        self.var_course.set(data[1]),
-        self.var_year.set(data[2]),
-        self.var_semester.set(data[3]),
-        self.var_rollNum.set(data[4]),
-        self.var_std_name.set(data[5]),
-        self.var_batch.set(data[6]),
-        self.var_batchNum.set(data[7]),
-        self.var_gender.set(data[8]),
-        self.var_dob.set(data[9]),
-        self.var_email.set(data[10]),
-        self.var_phone.set(data[11]),
-        self.var_fatherNum.set(data[12]),
-        self.var_motherNum.set(data[13]),
-        self.var_radioButton1.set(data[14]),
+            string = "UPDATE {} SET {} = {} WHERE enroll_no = {} ".format(
+                str(table_name), str(d1), str(status), str(rol)
+            )
+            print(string)
+            my_cursor = conn.cursor()
+            my_cursor.execute(string)
 
-        self.var_stdIdforImage = str(data[4])
+            conn.commit()
+            self.fetch_data()
+            conn.close()
+            messagebox.showinfo(
+                "Success", "Student attendance successfully updated", parent=self.root
+            )
+
+        except mysql.connector.Error as e:
+            messagebox.showinfo("Error", "Invalid Credentials", parent=self.root)
+
+    #################################################################################################################################
+
+    def export_data(self):
+
+        year = self.mydata[0]
+        batch = self.mydata[2]
+        course = self.mydata[3]
+        table_name = year + "_" + batch + "_" + course
+
+        try:  # Now we will connect with SQL
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ShadowWalker77",
+                database="face_recognition_db",
+                auth_plugin="mysql_native_password",
+            )
+
+            # ===================cursor 0============================= --- Getting the columns
+            my_cursor = conn.cursor()
+
+            sql = "select * from {}".format(str(table_name))
+            df = pd.read_sql(sql, con=conn)
+            df.to_csv("ai.csv")
+
+            myData = df.values.tolist()
+
+            try:
+                if len(myData) < 1:
+                    messagebox.showerror(
+                        "No Data", "No Data Found To Export", parent=self.root
+                    )
+                    return False
+
+                fln = filedialog.asksaveasfilename(
+                    initialdir=os.getcwd(),
+                    title="Open CSV",
+                    filetypes=[("csv", ".CSV")],
+                    parent=self.root,
+                )
+                fln = fln + ".csv"
+                df.to_csv(fln, index=False)
+
+                if fln != ".csv":
+                    messagebox.showinfo(
+                        "Data Exported",
+                        "Your Data Exported to "
+                        + os.path.basename(fln)
+                        + " successfully",
+                        parent=self.root,
+                    )
+
+            except Exception as es:
+                messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
+
+            conn.commit()
+            conn.close()
+
+        except Exception as es:
+            messagebox.showerror("Error", "User not registered", parent=self.root)
 
 
 if __name__ == "__main__":
     root = Tk()
-    obj = Student(root)
+    obj = Student_attendance(root)
     root.mainloop()

@@ -1,14 +1,19 @@
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
+from tkinter import messagebox
+import mysql.connector
+from face_recognition import Face_Recognition
+from teacherCheckStudentDetails import Student
+from teacherCheckAttendance import Student_attendance
 
 
 class teacherMainPage:
-    def __init__(self, root):
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
-
+        self.mydata = data
         # ---- Variables --- #
 
         # img1 = main background
@@ -47,7 +52,7 @@ class teacherMainPage:
         details_frame.config(highlightbackground="black", highlightcolor="black")
 
         # img2 = markAttendance image
-        img2 = Image.open("Images/ai.jpeg")
+        img2 = Image.open("Images/face.png")
         img2 = img2.resize((300, 300), Image.ANTIALIAS)
         self.photoimg2 = ImageTk.PhotoImage(img2)
         bg_img = Label(self.root, image=self.photoimg2)
@@ -70,7 +75,7 @@ class teacherMainPage:
         # markAttendance button
         markAttendance_btn = Button(
             markAttendance_frame,
-            # command=self.add_data,
+            command=self.mark_attandance,
             width=25,
             height=6,
             text="Mark Attendance",
@@ -83,7 +88,7 @@ class teacherMainPage:
         # details button
         details_btn = Button(
             details_frame,
-            # command=self.add_data,
+            command=self.student_details,
             width=25,
             height=6,
             text="Check Student Details",
@@ -96,7 +101,7 @@ class teacherMainPage:
         # editAttendance button
         editAttendance_btn = Button(
             editAttendance_frame,
-            # command=self.add_data,
+            command=self.attendance_details,
             width=25,
             height=6,
             text="Check / Edit Attendance",
@@ -105,6 +110,28 @@ class teacherMainPage:
             fg="black",
         )
         editAttendance_btn.place(x=15, y=400, anchor=NW)
+
+    # ==================function ============================================#
+
+    # ====================mark attandance button ==============================#
+
+    def mark_attandance(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = Face_Recognition(self.new_window, self.mydata)
+
+    def student_details(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = Student(self.new_window, self.mydata)
+
+    def attendance_details(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = Student_attendance(self.new_window, self.mydata)
 
 
 if __name__ == "__main__":
