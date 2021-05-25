@@ -1,15 +1,20 @@
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
+from tkinter import messagebox
+import mysql.connector
+from studentCheckDetails import studentCheckDetails
+from studentCheckAttendance import studentCheckAttendance
 
 
 class studentMainPage:
-    def __init__(self, root):
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
 
         # ---- Variables --- #
+        self.my_data = data
 
         # img1 = main background
         img1 = Image.open("Images/CoolBlues.jpeg")
@@ -57,7 +62,7 @@ class studentMainPage:
         # student button
         attendance_btn = Button(
             attendance_frame,
-            # command=self.add_data,
+            command=self.attendance_is,
             width=25,
             height=6,
             text="Check My Attendance",
@@ -72,7 +77,7 @@ class studentMainPage:
         # details button
         details_btn = Button(
             details_frame,
-            # command=self.add_data,
+            command=self.details,
             width=25,
             height=6,
             text="Check My Details",
@@ -83,6 +88,20 @@ class studentMainPage:
         details_btn.grid(row=0, column=0)
 
         details_btn.place(x=15, y=400, anchor=NW)
+
+        # ============================Functions ===================================
+
+    def attendance_is(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = studentCheckAttendance(self.new_window, self.my_data)
+
+    def details(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = studentCheckDetails(self.new_window, self.my_data)
 
 
 if __name__ == "__main__":

@@ -3,33 +3,53 @@ from tkinter import ttk
 import tkinter  # ttk is used for styling
 from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
+from tkinter import messagebox
 
 
 class studentCheckDetails:
-    def __init__(self, root):
+    def __init__(self, root, data):
         self.root = root
         self.root.geometry("1550x900+0+0")
         self.root.title("Face Recognition Attendance System")
+        self.my_data = data
 
         # ======= Variables ============
         self.var_rollNum = StringVar()
         self.var_name = StringVar()
-        var_rollNumText = StringVar()
-        var_nameText = StringVar()
-        var_yearText = StringVar()
-        var_semesterText = StringVar()
-        var_depText = StringVar()
-        var_batchText = StringVar()
-        var_emailText = StringVar()
-        var_phoneText = StringVar()
-        var_course1Text = StringVar()
-        var_course2Text = StringVar()
-        var_course3Text = StringVar()
-        var_course4Text = StringVar()
-        var_dobText = StringVar()
-        var_genderText = StringVar()
-        var_fatherText = StringVar()
-        var_motherText = StringVar()
+        self.var_rollNumText = StringVar()
+        self.var_nameText = StringVar()
+        self.var_yearText = StringVar()
+        self.var_semesterText = StringVar()
+        self.var_depText = StringVar()
+        self.var_batchText = StringVar()
+        self.var_emailText = StringVar()
+        self.var_phoneText = StringVar()
+        self.var_course1Text = StringVar()
+        self.var_course2Text = StringVar()
+        self.var_course3Text = StringVar()
+        self.var_course4Text = StringVar()
+        self.var_dobText = StringVar()
+        self.var_genderText = StringVar()
+        self.var_fatherText = StringVar()
+        self.var_motherText = StringVar()
+
+        # Setting the variables
+        self.var_rollNumText.set(self.my_data[0])
+        self.var_nameText.set(self.my_data[1])
+        self.var_yearText.set(self.my_data[2])
+        self.var_semesterText.set(self.my_data[3])
+        self.var_depText.set(self.my_data[4])
+        self.var_batchText.set(self.my_data[5])
+        self.var_emailText.set(self.my_data[6])
+        self.var_phoneText.set(self.my_data[7])
+        self.var_fatherText.set(self.my_data[8])
+        self.var_motherText.set(self.my_data[9])
+        self.var_course1Text.set(self.my_data[11])
+        self.var_course2Text.set(self.my_data[12])
+        self.var_course3Text.set(self.my_data[13])
+        self.var_course4Text.set(self.my_data[14])
+        self.var_genderText.set(self.my_data[15])
+        self.var_dobText.set(self.my_data[16])
 
         # img1 = main background
         img1 = Image.open("Images/bg2.jpeg")
@@ -67,7 +87,7 @@ class studentCheckDetails:
 
         rollNum_text_label = Label(
             details_frame,
-            textvariable=var_rollNumText,
+            textvariable=self.var_rollNumText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -84,7 +104,7 @@ class studentCheckDetails:
 
         name_text_label = Label(
             details_frame,
-            textvariable=var_nameText,
+            textvariable=self.var_nameText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -101,7 +121,7 @@ class studentCheckDetails:
 
         year_text_label = Label(
             details_frame,
-            textvariable=var_yearText,
+            textvariable=self.var_yearText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -118,7 +138,7 @@ class studentCheckDetails:
 
         semester_text_label = Label(
             details_frame,
-            textvariable=var_semesterText,
+            textvariable=self.var_semesterText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -135,7 +155,7 @@ class studentCheckDetails:
 
         dep_text_label = Label(
             details_frame,
-            textvariable=var_depText,
+            textvariable=self.var_depText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -152,11 +172,11 @@ class studentCheckDetails:
 
         batch_text_label = Label(
             details_frame,
-            textvariable=var_batchText,
+            textvariable=self.var_batchText,
             font=("times new roman", 17),
             bg="white",
         )
-        batch_text_label.place(x=245, y=300, anchor=NW)
+        batch_text_label.place(x=245, y=330, anchor=NW)
 
         # Email
         email_label = Label(
@@ -169,7 +189,7 @@ class studentCheckDetails:
 
         email_text_label = Label(
             details_frame,
-            textvariable=var_emailText,
+            textvariable=self.var_emailText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -186,7 +206,7 @@ class studentCheckDetails:
 
         phone_text_label = Label(
             details_frame,
-            textvariable=var_phoneText,
+            textvariable=self.var_phoneText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -205,7 +225,7 @@ class studentCheckDetails:
 
         course_1_text_label = Label(
             details_frame,
-            textvariable=var_course1Text,
+            textvariable=self.var_course1Text,
             font=("times new roman", 17),
             bg="white",
         )
@@ -222,7 +242,7 @@ class studentCheckDetails:
 
         course_2_text_label = Label(
             details_frame,
-            textvariable=var_course2Text,
+            textvariable=self.var_course2Text,
             font=("times new roman", 17),
             bg="white",
         )
@@ -239,7 +259,7 @@ class studentCheckDetails:
 
         course_3_text_label = Label(
             details_frame,
-            textvariable=var_course3Text,
+            textvariable=self.var_course3Text,
             font=("times new roman", 17),
             bg="white",
         )
@@ -256,7 +276,7 @@ class studentCheckDetails:
 
         course_4_text_label = Label(
             details_frame,
-            textvariable=var_course4Text,
+            textvariable=self.var_course4Text,
             font=("times new roman", 17),
             bg="white",
         )
@@ -273,7 +293,7 @@ class studentCheckDetails:
 
         gender_text_label = Label(
             details_frame,
-            textvariable=var_genderText,
+            textvariable=self.var_genderText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -290,7 +310,7 @@ class studentCheckDetails:
 
         dob_text_label = Label(
             details_frame,
-            textvariable=var_dobText,
+            textvariable=self.var_dobText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -307,7 +327,7 @@ class studentCheckDetails:
 
         father_text_label = Label(
             details_frame,
-            textvariable=var_fatherText,
+            textvariable=self.var_fatherText,
             font=("times new roman", 17),
             bg="white",
         )
@@ -324,15 +344,11 @@ class studentCheckDetails:
 
         mother_text_label = Label(
             details_frame,
-            textvariable=var_motherText,
+            textvariable=self.var_motherText,
             font=("times new roman", 17),
             bg="white",
         )
         mother_text_label.place(x=700, y=450, anchor=NW)
-
-        # -------Buttons------- #
-
-    # ------- Functions --------------------------------------#
 
 
 if __name__ == "__main__":
