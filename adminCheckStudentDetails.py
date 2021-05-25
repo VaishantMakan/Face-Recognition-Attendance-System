@@ -16,23 +16,30 @@ class adminCheckStudentDetails:
         self.root.title("Face Recognition Attendance System")
 
         # ======= Variables ============
-        self.var_dep = StringVar()  # department
-        self.var_course = StringVar()
+
+        self.var_rollNum = StringVar()
+        self.var_name = StringVar()
         self.var_year = StringVar()
         self.var_semester = StringVar()
-        self.var_rollNum = StringVar()
-        self.var_std_name = StringVar()
+        self.var_dep = (
+            StringVar()
+        )  # department --------------------- StringVar is used in tkinter and it is a class whose function is get()
         self.var_batch = StringVar()
-        self.var_batchNum = StringVar()
-        self.var_gender = StringVar()
-        self.var_dob = StringVar()
         self.var_email = StringVar()
         self.var_phone = StringVar()
+
         self.var_fatherNum = StringVar()
         self.var_motherNum = StringVar()
-
+        self.var_gender = StringVar()
+        self.var_course1 = StringVar()
+        self.var_course2 = StringVar()
+        self.var_course3 = StringVar()
+        self.var_course4 = StringVar()
+        self.var_old_roll = ""
+        self.var_password = ""
         self.var_stdIdforImage = ""
-
+        self.var_radioButton1 = StringVar()
+        self.var_defaultDob = StringVar()
         # img1 = main background
         img1 = Image.open("Images/bg_Student.jpeg")
         img1 = img1.resize((1550, 900), Image.ANTIALIAS)
@@ -98,7 +105,7 @@ class adminCheckStudentDetails:
 
         rollNum_entry = ttk.Entry(
             class_Student_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_rollNum,
             width=20,
             font=("times new roman", 13, "bold"),
         )
@@ -115,7 +122,7 @@ class adminCheckStudentDetails:
 
         name_entry = ttk.Entry(
             class_Student_frame,
-            textvariable=self.var_std_name,
+            textvariable=self.var_name,
             width=20,
             font=("times new roman", 13, "bold"),
         )
@@ -132,12 +139,12 @@ class adminCheckStudentDetails:
 
         year_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_year,
+            textvariable=self.var_year,
             font=("times new roman", 15, "bold"),
             state="readonly",
             width=17,
         )
-        year_combo["values"] = ("Select Year", "2021", "2022", "2023")
+        year_combo["values"] = ("Select Year", "I", "II", "III")
         year_combo.current(0)  # to give the bydeafault index
         year_combo.place(x=150, y=150, anchor=NW)
 
@@ -152,7 +159,7 @@ class adminCheckStudentDetails:
 
         semester_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_semester,
+            textvariable=self.var_semester,
             font=("times new roman", 15, "bold"),
             state="readonly",
             width=17,
@@ -177,18 +184,12 @@ class adminCheckStudentDetails:
 
         dep_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_dep,
+            textvariable=self.var_dep,
             font=("times new roman", 15, "bold"),
             state="readonly",
             width=17,
         )
-        dep_combo["values"] = (
-            "Select Department",
-            "CSE",
-            "COE",
-            "COBS",
-            "IT",
-        )
+        dep_combo["values"] = ("Select Department", "CSE", "COE", "COBS", "IT")
         dep_combo.current(0)  # to give the bydeafault index
         dep_combo.place(x=150, y=290, anchor=NW)
 
@@ -203,12 +204,12 @@ class adminCheckStudentDetails:
 
         batch_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_batch,
             font=("times new roman", 15),
             state="readonly",
             width=17,
         )
-        batch_combo["values"] = ("", "2CS9", "2CS10", "2CS11", "2CS12")
+        batch_combo["values"] = ("", "2EE9", "2CS10", "2CS11", "2CS12")
         batch_combo.current(0)  # to give the bydeafault index
 
         batch_combo.place(x=150, y=360, anchor=NW)
@@ -233,7 +234,7 @@ class adminCheckStudentDetails:
 
         email_entry = ttk.Entry(
             class_Student_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_email,
             width=20,
             font=("times new roman", 13),
         )
@@ -250,7 +251,7 @@ class adminCheckStudentDetails:
 
         phone_entry = ttk.Entry(
             class_Student_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_phone,
             width=20,
             font=("times new roman", 13),
         )
@@ -269,18 +270,19 @@ class adminCheckStudentDetails:
 
         course_1_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course1,
             font=("times new roman", 15),
             state="readonly",
             width=14,
         )
         course_1_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_1_combo.current(0)  # to give the bydeafault index
 
@@ -297,18 +299,19 @@ class adminCheckStudentDetails:
 
         course_2_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course2,
             font=("times new roman", 15),
             state="readonly",
             width=14,
         )
         course_2_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_2_combo.current(0)  # to give the bydeafault index
 
@@ -325,18 +328,19 @@ class adminCheckStudentDetails:
 
         course_3_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course3,
             font=("times new roman", 15),
             state="readonly",
             width=14,
         )
         course_3_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_3_combo.current(0)  # to give the bydeafault index
 
@@ -353,18 +357,19 @@ class adminCheckStudentDetails:
 
         course_4_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_course4,
             font=("times new roman", 15),
             state="readonly",
             width=14,
         )
         course_4_combo["values"] = (
-            "",
-            "UCS411 - AI",
-            "UCS414 - CN",
-            "UCS310 - DBMS",
-            "UMA035 - OT",
-            "UCS503 - SE",
+            "Select Course",
+            "UCS411_AI",
+            "UCS414_CN",
+            "UCS310_DBMS",
+            "UMA035_OT",
+            "UCS503_SE",
+            "ECE202_Elec",
         )
         course_4_combo.current(0)  # to give the bydeafault index
 
@@ -381,7 +386,7 @@ class adminCheckStudentDetails:
 
         gender_combo = ttk.Combobox(
             class_Student_frame,
-            # textvariable=self.var_memType,
+            textvariable=self.var_gender,
             font=("times new roman", 15),
             state="readonly",
             width=14,
@@ -410,7 +415,7 @@ class adminCheckStudentDetails:
 
         dob_entry = ttk.Entry(
             class_Student_frame,
-            textvariable=self.var_dob,
+            textvariable=self.var_defaultDob,
             width=17,
             font=("times new roman", 13, "bold"),
         )
@@ -427,7 +432,7 @@ class adminCheckStudentDetails:
 
         fatherNum_entry = ttk.Entry(
             class_Student_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_fatherNum,
             width=17,
             font=("times new roman", 13),
         )
@@ -444,31 +449,11 @@ class adminCheckStudentDetails:
 
         motherNum_entry = ttk.Entry(
             class_Student_frame,
-            # textvariable=self.var_rollNum,
+            textvariable=self.var_motherNum,
             width=17,
             font=("times new roman", 13),
         )
         motherNum_entry.place(x=530, y=500, anchor=NW)
-
-        ##########################################################################
-
-        # Radio buttons
-        self.var_radioButton1 = StringVar()
-        radiobtn1 = ttk.Radiobutton(
-            class_Student_frame,
-            variable=self.var_radioButton1,
-            text="Photo Sample Taken",
-            value="Yes",
-        )
-        radiobtn1.place(x=10, y=565)
-
-        radiobtn2 = ttk.Radiobutton(
-            class_Student_frame,
-            variable=self.var_radioButton1,
-            text="No Photo Sample",
-            value="No",
-        )
-        radiobtn2.place(x=400, y=565)
 
         #########################################################################
 
@@ -479,10 +464,10 @@ class adminCheckStudentDetails:
         # Save button in button frame
         save_btn = Button(
             btn_frame,
-            command=self.add_data,
+            command=self.search_data,
             width=23,
             height=2,
-            text="Save",
+            text="Search",
             font=("times new roman", 13, "bold"),
             bg="white",
             fg="black",
@@ -533,28 +518,17 @@ class adminCheckStudentDetails:
         btn_frame1 = Frame(class_Student_frame, bd=2, relief=RAISED, bg="black")
         btn_frame1.place(x=0, y=675, width=675, height=40)
 
-        take_photo_btn = Button(
-            btn_frame1,
-            command=self.generate_dataset,
-            width=47,
-            height=2,
-            text="Take Photo Sample",
-            font=("times new roman", 13, "bold"),
-            bg="white",
-            fg="black",
-        )
-        take_photo_btn.grid(row=0, column=0)
-
         upadte_photo_btn = Button(
             btn_frame1,
-            width=48,
+            command=self.update_dataset,
+            width=100,
             height=2,
             text="Update Photo Sample",
             font=("times new roman", 13, "bold"),
             bg="white",
             fg="black",
         )
-        upadte_photo_btn.grid(row=0, column=1)
+        upadte_photo_btn.grid(row=0, column=0)
 
         ##################################################
 
@@ -649,21 +623,22 @@ class adminCheckStudentDetails:
         self.student_table = ttk.Treeview(
             table_frame,
             column=(
-                "dep",
-                "course",
-                "year",
-                "sem",
-                "roll_no",
-                "name",
-                "batch",
-                "batch_no",
-                "gender",
+                "Enroll_no",
+                "Name",
+                "Year",
+                "Sem",
+                "Dep",
+                "Batch",
+                "Email",
+                "Phone_no",
+                "Father_no",
+                "Mother_no",
+                "Course1",
+                "Course2",
+                "Course3",
+                "Course4",
+                "Gender",
                 "DOB",
-                "email",
-                "phone_no",
-                "Father_contact",
-                "Mother_contact",
-                "photo",
             ),
             xscrollcommand=scroll_x.set,
             yscrollcommand=scroll_y.set,
@@ -677,103 +652,56 @@ class adminCheckStudentDetails:
 
         scroll_y.config(command=self.student_table.yview)
 
-        self.student_table.heading("dep", text="Department")
-        self.student_table.heading("course", text="Course")
-        self.student_table.heading("year", text="Year")
-        self.student_table.heading("sem", text="Semester")
-        self.student_table.heading("roll_no", text="Roll No")
-        self.student_table.heading("name", text="Student Name")
-        self.student_table.heading("batch", text="Batch")
-        self.student_table.heading("batch_no", text="Batch No")
-        self.student_table.heading("gender", text="Gender")
-        self.student_table.heading("DOB", text="DOB(DD-MM-YYYY")
-        self.student_table.heading("email", text="Email (thapar.edu)")
-        self.student_table.heading("phone_no", text="Phone Number")
-        self.student_table.heading("Father_contact", text="Father's Ph.No")
-        self.student_table.heading("Mother_contact", text="Mother's Ph.No")
-        self.student_table.heading("photo", text="PhotoSampleStatus")
+        self.student_table.heading("Enroll_no", text="Enroll_no")
+        self.student_table.heading("Name", text="Name")
+        self.student_table.heading("Year", text="Year")
+        self.student_table.heading("Sem", text="Sem")
+        self.student_table.heading("Dep", text="Dep")
+        self.student_table.heading("Batch", text="Batch")
+        self.student_table.heading("Email", text="Email")
+        self.student_table.heading("Phone_no", text="Phone_no")
+        self.student_table.heading("Father_no", text="Father_no")
+        self.student_table.heading("Mother_no", text="Mother_no")
+        self.student_table.heading("Course1", text="Course1")
+        self.student_table.heading("Course2", text="Course2")
+        self.student_table.heading("Course3", text="Course3")
+        self.student_table.heading("Course4", text="Course4")
+        self.student_table.heading("Gender", text="Gender")
+        self.student_table.heading("DOB", text="DOB")
+        # self.student_table.heading("Image", text="Image")
         self.student_table["show"] = "headings"
 
-        self.student_table.column("dep", width=100)
-        self.student_table.column("course", width=100)
-        self.student_table.column("year", width=100)
-        self.student_table.column("sem", width=100)
-        self.student_table.column("roll_no", width=100)
-        self.student_table.column("name", width=100)
-        self.student_table.column("batch", width=100)
-        self.student_table.column("batch_no", width=100)
-        self.student_table.column("gender", width=100)
-        self.student_table.column("DOB", width=100)
-        self.student_table.column("email", width=200)
-        self.student_table.column("phone_no", width=100)
-        self.student_table.column("Father_contact", width=100)
-        self.student_table.column("Mother_contact", width=100)
-        self.student_table.column("photo", width=200)
+        self.student_table.column("Enroll_no", width=100)
+        self.student_table.column("Name", width=100)
+        self.student_table.column("Year", width=100)
+        self.student_table.column("Sem", width=100)
+        self.student_table.column("Dep", width=100)
+        self.student_table.column("Batch", width=100)
+        self.student_table.column("Email", width=100)
+        self.student_table.column("Phone_no", width=100)
+        self.student_table.column("Father_no", width=100)
+
+        self.student_table.column("Mother_no", width=100)
+        self.student_table.column("Course1", width=200)
+        self.student_table.column("Course2", width=200)
+        self.student_table.column("Course3", width=200)
+        self.student_table.column("Course4", width=200)
+        self.student_table.column("Gender", width=200)
+        self.student_table.column("DOB", width=200)
+        # self.student_table.column("Image", width=200)
 
         self.student_table.pack(fill=BOTH, expand=1)
         self.student_table.bind("<ButtonRelease>", self.get_cursor)
-        self.fetch_data()
+        # self.fetch_data()
 
     # ============================== Function Declaration ===================================#
 
-    def add_data(self):
-        if (
-            self.var_dep.get() == "Select Department"
-            or self.var_course.get() == "Select Course"
-            or self.var_year.get() == "Select Year"
-            or self.var_semester.get() == "Select Semester"
-            or self.var_rollNum.get() == ""
-            or self.var_std_name.get() == ""
-            or self.var_batch.get() == ""
-            or self.var_batchNum.get() == ""
-            or self.var_dob.get() == ""
-            or self.var_email.get() == ""
-            or self.var_phone.get() == ""
-        ):
-            messagebox.showerror("Error", "All Fields are required", parent=self.root)
-        else:
-            try:
-                conn = mysql.connector.connect(
-                    host="localhost",
-                    user="root",
-                    password="ShadowWalker77",
-                    database="Face_Recognition_db",
-                    auth_plugin="mysql_native_password",
-                )
-                my_cursor = conn.cursor()
-                my_cursor.execute(
-                    "insert into student_table values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                    (
-                        self.var_dep.get(),
-                        self.var_course.get(),
-                        self.var_year.get(),
-                        self.var_semester.get(),
-                        self.var_rollNum.get(),
-                        self.var_std_name.get(),
-                        self.var_batch.get(),
-                        self.var_batchNum.get(),
-                        self.var_gender.get(),
-                        self.var_dob.get(),
-                        self.var_email.get(),
-                        self.var_phone.get(),
-                        self.var_fatherNum.get(),
-                        self.var_motherNum.get(),
-                        self.var_radioButton1.get(),
-                    ),
-                )
-                conn.commit()
-                self.fetch_data()
-                conn.close()
-                messagebox.showinfo(
-                    "Success",
-                    "Student details have been added successfully",
-                    parent=self.root,
-                )
-            except Exception as es:
-                messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
-
     # =======================fetch data =================== #
-    def fetch_data(self):
+    def fetch_data(self, table_name):
+        year = self.var_year.get()
+        batch = self.var_batch.get()
+        table_name = year + "_" + batch
+
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
@@ -782,8 +710,11 @@ class adminCheckStudentDetails:
             auth_plugin="mysql_native_password",
         )
         my_cursor = conn.cursor()
-        my_cursor.execute("select * from student_table")
+
+        my_cursor.execute("select * from {}".format(str(table_name)))
         data = my_cursor.fetchall()
+
+        p = 0
 
         if len(data) != 0:
             self.student_table.delete(*self.student_table.get_children())
@@ -796,6 +727,16 @@ class adminCheckStudentDetails:
         conn.commit()
         conn.close()
 
+    ######################################################################################
+
+    def search_data(self):
+        year = self.var_year.get()
+        batch = self.var_batch.get()
+        table_name = year + "_" + batch
+        print(table_name)
+
+        self.fetch_data(table_name)
+
     # ======================= get cursor =================#
 
     def get_cursor(self, event=""):
@@ -803,87 +744,47 @@ class adminCheckStudentDetails:
         content = self.student_table.item(cursor_focus)
         data = content["values"]
 
-        self.var_dep.set(data[0]),
-        self.var_course.set(data[1]),
+        self.var_rollNum.set(data[0]),
+        self.var_name.set(data[1]),
         self.var_year.set(data[2]),
         self.var_semester.set(data[3]),
-        self.var_rollNum.set(data[4]),
-        self.var_std_name.set(data[5]),
-        self.var_batch.set(data[6]),
-        self.var_batchNum.set(data[7]),
-        self.var_gender.set(data[8]),
-        self.var_dob.set(data[9]),
-        self.var_email.set(data[10]),
-        self.var_phone.set(data[11]),
-        self.var_fatherNum.set(data[12]),
-        self.var_motherNum.set(data[13]),
-        self.var_radioButton1.set(data[14]),
+        self.var_dep.set(data[4]),
+        self.var_batch.set(data[5]),
+        self.var_email.set(data[6]),
+        self.var_phone.set(data[7]),
 
-        self.var_stdIdforImage = str(data[4])
+        self.var_fatherNum.set(data[8]),
+        self.var_motherNum.set(data[9]),
+        self.var_course1.set(data[10]),
+        self.var_course2.set(data[11]),
+        self.var_course3.set(data[12]),
+        self.var_course4.set(data[13]),
+        self.var_gender.set(data[14]),
+        self.var_defaultDob.set(data[15]),
+        self.var_old_roll = data[0]
+        print("Self.va", self.var_old_roll)
+        try:  # Now we will connect with SQL
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ShadowWalker77",
+                database="face_recognition_db",
+                auth_plugin="mysql_native_password",
+            )
 
-    # ======= update function ======= #
-    def update_data(self):
-        if (
-            self.var_dep.get() == "Select Department"
-            or self.var_course.get() == "Select Course"
-            or self.var_year.get() == "Select Year"
-            or self.var_semester.get() == "Select Semester"
-            or self.var_rollNum.get() == ""
-            or self.var_std_name.get() == ""
-            or self.var_batch.get() == ""
-            or self.var_batchNum.get() == ""
-            or self.var_dob.get() == ""
-            or self.var_email.get() == ""
-            or self.var_phone.get() == ""
-        ):
-            messagebox.showerror("Error", "All Fields are required", parent=self.root)
-        else:
-            try:
-                Update = messagebox.askyesno(
-                    "Update",
-                    "Do you want to update the student details",
-                    parent=self.root,
-                )
-                if Update > 0:
-                    conn = mysql.connector.connect(
-                        host="localhost",
-                        user="root",
-                        password="ShadowWalker77",
-                        database="Face_Recognition_db",
-                        auth_plugin="mysql_native_password",
-                    )
-                    my_cursor = conn.cursor()
-                    my_cursor.execute(
-                        "update student_table set dep=%s, course=%s,year=%s,semester=%s,std_name=%s,batch=%s,batch_num=%s,gender=%s,dob=%s,email=%s,phone=%s,father_num=%s,mother_num=%s,photoSample=%s where rollNum=%s",
-                        (
-                            self.var_dep.get(),
-                            self.var_course.get(),
-                            self.var_year.get(),
-                            self.var_semester.get(),
-                            self.var_std_name.get(),
-                            self.var_batch.get(),
-                            self.var_batchNum.get(),
-                            self.var_gender.get(),
-                            self.var_dob.get(),
-                            self.var_email.get(),
-                            self.var_phone.get(),
-                            self.var_fatherNum.get(),
-                            self.var_motherNum.get(),
-                            self.var_radioButton1.get(),
-                            self.var_rollNum.get(),
-                        ),
-                    )
-                else:
-                    if not Update:
-                        return
-                messagebox.showinfo(
-                    "Success", "Student details successfully updated", parent=self.root
-                )
-                conn.commit()
-                self.fetch_data()
-                conn.close()
-            except Exception as es:
-                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
+            my_cursor = conn.cursor()
+            sql = "select password from student where enroll_No=%s"
+            val = (self.var_old_roll,)
+            my_cursor.execute(sql, val)
+            password = my_cursor.fetchall()
+            print("password", password)
+            self.var_password = password[0][0]
+            conn.commit()
+            # self.fetch_data()
+            conn.close()  # Closing teh connection
+        except Exception as es:
+            messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
+        # self.var_radioButton1.set(data[16]),
 
     # ======== delete function ======= #
     def delete_data(self):
@@ -903,61 +804,318 @@ class adminCheckStudentDetails:
                         host="localhost",
                         user="root",
                         password="ShadowWalker77",
-                        database="Face_Recognition_db",
+                        database="face_recognition_db",
                         auth_plugin="mysql_native_password",
                     )
+
                     my_cursor = conn.cursor()
-                    sql = "delete from student_table where rollNum=%s"
-                    val = (self.var_rollNum.get(),)
-                    my_cursor.execute(sql, val)
+                    roll2 = "'" + str(self.var_old_roll) + "'"
+                    sql = "delete from student where enroll_No={}".format(str(roll2))
+                    print(sql)
+                    # print(self)
+                    my_cursor.execute(sql)
+                    my_cursor = conn.cursor()
+                    temp_var = self.var_year.get() + "_" + self.var_batch.get()
+                    sql = "delete from {} where enroll_No={}".format(
+                        temp_var, str(roll2)
+                    )
+                    print(sql)
+                    # val = (self.var_old_roll,)
+                    my_cursor.execute(sql)
+                    conn.commit()
+                    self.fetch_data(temp_var)
+                    conn.close()
+                    temp_var1 = self.var_course1.get()
+                    temp_var2 = self.var_course2.get()
+                    temp_var3 = self.var_course3.get()
+                    temp_var4 = self.var_course4.get()
+                    li = [temp_var1, temp_var2, temp_var3, temp_var4]
+                    print("li is ", li)
+
+                    temp_year = self.var_year.get()
+                    temp_batch = self.var_batch.get()
+
+                    for i in li:
+
+                        temp_var = temp_year + "_" + temp_batch + "_" + str(i)
+                        # Now we will connect with SQL
+                        conn = mysql.connector.connect(
+                            host="localhost",
+                            user="root",
+                            password="ShadowWalker77",
+                            database="face_recognition_db",
+                            auth_plugin="mysql_native_password",
+                        )
+                        sql = "delete from {} where enroll_No={}".format(
+                            temp_var, str(roll2)
+                        )
+                        # val = (self.var_old_roll,)
+                        my_cursor = (
+                            conn.cursor()
+                        )  # To store the values given by the use
+                        my_cursor.execute(sql)
+
+                        conn.commit()
+                        # self.fetch_data()
+                        conn.close()  # Closing teh connection
+                        # messagebox.showinfo("Success","Student details have been added successfully", parent=self.root,) # To showthe sccess message on parent which is self.root
                 else:
                     if not delete:
                         return
-
-                conn.commit()
-                self.fetch_data()
-                conn.close()
-                messagebox.showinfo(
-                    "Delete", "Successfully deleted student details", parent=self.root
-                )
             except Exception as es:
-                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
+                pass
+                # messagebox.showerror("work done", parent=self.root)
 
     # ======== reset function ======== #
     def reset_data(self):
-        self.var_dep.set("Select Department")
-        self.var_course.set("Select Course")
+
+        self.var_rollNum.set("")
+        self.var_name.set("")
         self.var_year.set("Select Year")
         self.var_semester.set("Select Semester")
-        self.var_rollNum.set("")
-        self.var_std_name.set("")
-        self.var_batch.set("Batch")
-        self.var_batchNum.set("Batch Num")
-        self.var_gender.set("Select gender")
-        self.var_dob.set("")
+        self.var_dep.set("Select Department")
+        self.var_batch.set("")
         self.var_email.set("")
         self.var_phone.set("")
+        self.var_defaultDob.set("")
         self.var_fatherNum.set("")
         self.var_motherNum.set("")
-        self.var_radioButton1.set("")
+        self.var_gender.set("")
+        self.var_course1.set("Select Course")
+        self.var_course2.set("Select Course")
+        self.var_course3.set("Select Course")
+        self.var_course4.set("Select Course")
 
-    # ==== generate data set and take photo sample and also train the data set  ==== #
-    def generate_dataset(self):
+        self.var_radioButton1.get() == ""
+
+    def update_data(
+        self,
+    ):  # Add this in 'save' button, so that this functinality will work for the 'save' button
         if (
-            self.var_dep.get() == "Select Department"
-            or self.var_course.get() == "Select Course"
+            self.var_rollNum.get() == ""
+            or self.var_name.get() == ""
             or self.var_year.get() == "Select Year"
             or self.var_semester.get() == "Select Semester"
-            or self.var_rollNum.get() == ""
-            or self.var_std_name.get() == ""
-            or self.var_batch.get() == ""
-            or self.var_batchNum.get() == ""
-            or self.var_dob.get() == ""
+            or self.var_dep.get() == "Select Department"
+            or self.var_batch.get() == "Select Batch"
             or self.var_email.get() == ""
             or self.var_phone.get() == ""
+            or self.var_fatherNum.get() == ""
+            or self.var_motherNum.get() == ""
+            # or self.var_password.get() == ""
+            # or self.var_confirm_password.get() == ""
+            or self.var_course1.get() == "Select Course"
+            or self.var_course2.get() == "Select Course"
+            or self.var_course3.get() == "Select Course"
+            or self.var_course4.get() == "Select Course"
+            or self.var_gender.get() == ""
+            or self.var_defaultDob.get() == "Choose Date"
+        ):
+            messagebox.showerror(
+                "Error", "All Fields are required", parent=self.root
+            )  # Messagebox to show the error and parent=self.root to show the message in the same window is any of the fields would be missing
+
+        else:  # Ab agar data aa jata hai to usse database mein save karna hai
+
+            try:  # Now we will connect with SQL
+                Update = messagebox.askyesno(
+                    "Update",
+                    "Do you want to update the student details",
+                    parent=self.root,
+                )
+                if Update > 0:
+                    conn = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        password="ShadowWalker77",
+                        database="face_recognition_db",
+                        auth_plugin="mysql_native_password",
+                    )
+
+                    my_cursor = conn.cursor()
+                    roll1 = "'" + str(self.var_old_roll) + "'"
+                    sql = "delete from student where enroll_No={}".format(str(roll1))
+                    print(sql)
+                    # print(self)
+                    my_cursor.execute(sql)
+
+                    my_cursor = conn.cursor()  # To store the values given by the user
+                    my_cursor.execute(
+                        "insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (
+                            self.var_rollNum.get(),
+                            self.var_name.get(),
+                            self.var_year.get(),
+                            self.var_semester.get(),
+                            self.var_dep.get(),
+                            self.var_batch.get(),
+                            self.var_email.get(),
+                            self.var_phone.get(),
+                            self.var_fatherNum.get(),
+                            self.var_motherNum.get(),
+                            self.var_password,
+                            self.var_course1.get(),
+                            self.var_course2.get(),
+                            self.var_course3.get(),
+                            self.var_course4.get(),
+                            self.var_gender.get(),
+                            self.var_defaultDob.get(),
+                        ),
+                    )
+                    conn.commit()
+                    # self.fetch_data()
+                    conn.close()  # Closing teh connection
+                    messagebox.showinfo(
+                        "Success",
+                        "Student details have been added successfully",
+                        parent=self.root,
+                    )  # To showthe sccess message on parent which is self.root
+
+                    ######################################################################
+                    temp_var = self.var_year.get() + "_" + self.var_batch.get()
+                    temp_dep = self.var_dep.get()
+                    temp_roll = "'" + self.var_rollNum.get() + "'"
+                    temp_name = "'" + self.var_name.get() + "'"
+                    temp_year = "'" + self.var_year.get() + "'"
+                    temp_sem = "'" + self.var_semester.get() + "'"
+                    temp_dep1 = "'" + temp_dep + "'"
+                    temp_batch = "'" + self.var_batch.get() + "'"
+                    temp_email = "'" + self.var_email.get() + "'"
+                    temp_phone = "'" + self.var_phone.get() + "'"
+                    temp_fatherNum = "'" + self.var_fatherNum.get() + "'"
+                    temp_motherNum = "'" + self.var_motherNum.get() + "'"
+                    temp_course1 = "'" + self.var_course1.get() + "'"
+                    temp_course2 = "'" + self.var_course2.get() + "'"
+                    temp_course3 = "'" + self.var_course3.get() + "'"
+                    temp_course4 = "'" + self.var_course4.get() + "'"
+                    temp_gender = "'" + self.var_gender.get() + "'"
+                    temp_dob = "'" + self.var_defaultDob.get() + "'"
+                    print("dep is", self.var_dep.get())
+
+                    try:  # Now we will connect with SQL
+                        conn = mysql.connector.connect(
+                            host="localhost",
+                            user="root",
+                            password="ShadowWalker77",
+                            database="face_recognition_db",
+                            auth_plugin="mysql_native_password",
+                        )
+
+                        my_cursor = conn.cursor()
+                        roll2 = "'" + str(self.var_old_roll) + "'"
+                        sql = "delete from {} where enroll_No={}".format(
+                            temp_var, roll2
+                        )
+                        print(sql)
+                        # val = (self.var_old_roll,)
+                        my_cursor.execute(sql)
+                        my_cursor = (
+                            conn.cursor()
+                        )  # To store the values given by the user
+
+                        sql = "insert into {} values({},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(
+                            str(temp_var),
+                            temp_roll,
+                            temp_name,
+                            temp_year,
+                            temp_sem,
+                            temp_dep1,
+                            temp_batch,
+                            temp_email,
+                            temp_phone,
+                            temp_fatherNum,
+                            temp_motherNum,
+                            temp_course1,
+                            temp_course2,
+                            temp_course3,
+                            temp_course4,
+                            temp_gender,
+                            temp_dob,
+                        )
+                        print(sql)
+                        my_cursor.execute(sql)
+                        conn.commit()
+                        self.fetch_data(temp_var)
+                        conn.close()  # Closing teh connection
+                        messagebox.showinfo(
+                            "Success",
+                            "Student details have been added successfully",
+                            parent=self.root,
+                        )  # To showthe sccess message on parent which is self.root
+
+                    except Exception as es:
+                        messagebox.showerror(
+                            "Error", f"Due to : {str(es)}", parent=self.root
+                        )
+
+                    ############################################################################
+                    temp_var1 = self.var_course1.get()
+                    temp_var2 = self.var_course2.get()
+                    temp_var3 = self.var_course3.get()
+                    temp_var4 = self.var_course4.get()
+                    li = [temp_var1, temp_var2, temp_var3, temp_var4]
+                    print("li is ", li)
+
+                    temp_year = self.var_year.get()
+                    temp_batch = self.var_batch.get()
+
+                    for i in li:
+
+                        temp_var = temp_year + "_" + temp_batch + "_" + str(i)
+                        try:  # Now we will connect with SQL
+                            conn = mysql.connector.connect(
+                                host="localhost",
+                                user="root",
+                                password="ShadowWalker77",
+                                database="face_recognition_db",
+                                auth_plugin="mysql_native_password",
+                            )
+
+                            my_cursor = (
+                                conn.cursor()
+                            )  # To store the values given by the user
+                            my_cursor.execute(
+                                "insert into {} values({})".format(
+                                    temp_var, self.var_rollNum.get()
+                                ),
+                            )
+                            conn.commit()
+                            # self.fetch_data()
+                            conn.close()  # Closing teh connection
+                            # messagebox.showinfo("Success","Student details have been added successfully", parent=self.root,) # To showthe sccess message on parent which is self.root
+
+                        except Exception as es:
+                            pass
+                            # messagebox.showerror("work done", parent=self.root)
+
+            except Exception as es:
+                messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
+
+    # ==== generate data set and take photo sample and also train the data set  ==== #
+    def update_dataset(self):
+        if (
+            self.var_rollNum.get() == ""
+            or self.var_name.get() == ""
+            or self.var_year.get() == "Select Year"
+            or self.var_semester.get() == "Select Semester"
+            or self.var_dep.get() == "Select Department"
+            or self.var_batch.get() == ""
+            or self.var_email.get() == ""
+            or self.var_phone.get() == ""
+            # or self.var_dob.get() == ""
+            or self.var_fatherNum.get() == ""
+            or self.var_motherNum.get() == ""
+            or self.var_gender.get() == ""
+            or self.var_course1.get() == "Select Course"
+            or self.var_course2.get() == "Select Course"
+            or self.var_course3.get() == "Select Course"
+            or self.var_course4.get() == "Select Course"
         ):
             messagebox.showerror("Error", "All Fields are required", parent=self.root)
         else:
+            roll2 = self.var_rollNum.get()
+            roll3 = roll2
+            roll2 = "'" + roll2 + "'"
             try:
                 Update = messagebox.askyesno(
                     "Update",
@@ -973,154 +1131,78 @@ class adminCheckStudentDetails:
                         auth_plugin="mysql_native_password",
                     )
                     my_cursor = conn.cursor()
-                    my_cursor.execute("select * from student_table")
-                    myresult = my_cursor.fetchall()
-                    id = 0
-                    for x in myresult:
-                        id += 1
-                    my_cursor.execute(
-                        "update student_table set dep=%s, course=%s,year=%s,semester=%s,std_name=%s,batch=%s,batch_num=%s,gender=%s,dob=%s,email=%s,phone=%s,father_num=%s,mother_num=%s,photoSample=%s where rollNum=%s",
-                        (
-                            self.var_dep.get(),
-                            self.var_course.get(),
-                            self.var_year.get(),
-                            self.var_semester.get(),
-                            self.var_std_name.get(),
-                            self.var_batch.get(),
-                            self.var_batchNum.get(),
-                            self.var_gender.get(),
-                            self.var_dob.get(),
-                            self.var_email.get(),
-                            self.var_phone.get(),
-                            self.var_fatherNum.get(),
-                            self.var_motherNum.get(),
-                            self.var_radioButton1.get(),
-                            self.var_rollNum.get(),
-                        ),
+                    sql = "select enroll_no from student where enroll_no={}".format(
+                        str(roll2)
                     )
+                    my_cursor.execute(sql)
+                    myroll = my_cursor.fetchall()
+
                 conn.commit()
-                self.fetch_data()
+                # self.fetch_data()
                 self.reset_data()
                 conn.close()
-
+                print(myroll[0][0])
+                print(roll2)
                 # == load predefined data on face frontals from opencv
+                if str(myroll[0][0]) == str(roll3):
+                    cam = cv2.VideoCapture(0)
+                    cam.set(3, 640)  # set video width
+                    cam.set(4, 480)  # set video height
 
-                cam = cv2.VideoCapture(0)
-                cam.set(3, 640)  # set video width
-                cam.set(4, 480)  # set video height
+                    face_detector = cv2.CascadeClassifier(
+                        "haarcascade_frontalface_default.xml"
+                    )
 
-                face_detector = cv2.CascadeClassifier(
-                    "haarcascade_frontalface_default.xml"
-                )
+                    count = 0
 
-                count = 0
+                    while True:
 
-                while True:
+                        ret, img = cam.read()
+                        # img = cv2.flip(img, -1) # flip video image vertically
+                        if ret == False:
+                            continue
 
-                    ret, img = cam.read()
-                    # img = cv2.flip(img, -1) # flip video image vertically
-                    if ret == False:
-                        continue
-
-                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                    faces = face_detector.detectMultiScale(gray, 1.3, 5)
-
-                    for (x, y, w, h) in faces:
-
-                        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                        count += 1
-
-                        # Save the captured image into the datasets folder
-                        cv2.imwrite(
-                            "dataset/"
-                            + str(self.var_stdIdforImage)
-                            + "."
-                            + str(count)
-                            + ".jpg",
-                            gray[y : y + h, x : x + w],
-                        )
-                        cv2.putText(
-                            img,
-                            str(count),
-                            (50, 50),
-                            cv2.FONT_HERSHEY_COMPLEX,
-                            2,
-                            (0, 255, 0),
-                            2,
-                        )
-
-                        cv2.imshow("image", img)
-
-                    k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
-                    if k == 27:  # escape key ASCII Value
-                        break
-                    elif count >= 5:  # Take 100 face sample and stop video
-                        break
-
-                cam.release()
-                cv2.destroyAllWindows()
-
-                # messagebox.showinfo("Training","Please wait while we are training the images")
-
-                # ======== Training Data ========== #
-
-                # Path for face image database
-                path = "dataset"
-
-                recognizer = cv2.face.LBPHFaceRecognizer_create()
-                detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-
-                # function to get the images and label data
-                def getImagesAndLabels(path):
-
-                    imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
-
-                    if "dataset/" + ".DS_Store" in imagePaths:
-                        imagePaths.remove("dataset/" + ".DS_Store")
-
-                    faceSamples = []
-                    ids = []
-
-                    for imagePath in imagePaths:
-
-                        PIL_img = Image.open(imagePath).convert(
-                            "L"
-                        )  # convert it to grayscale
-                        img_numpy = np.array(PIL_img, "uint8")
-
-                        id = int(os.path.split(imagePath)[-1].split(".")[0])
-                        faces = detector.detectMultiScale(img_numpy)
+                        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                        faces = face_detector.detectMultiScale(gray, 1.3, 5)
 
                         for (x, y, w, h) in faces:
-                            faceSamples.append(img_numpy[y : y + h, x : x + w])
-                            ids.append(id)
 
-                    return faceSamples, ids
+                            cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                            count += 1
 
-                print("\n [INFO] Training faces. It will take a few seconds. Wait ...")
-                faces, ids = getImagesAndLabels(path)
-                recognizer.train(faces, np.array(ids))
+                            # Save the captured image into the datasets folder
+                            cv2.imwrite(
+                                "dataset/" + str(roll3) + "." + str(count) + ".jpg",
+                                gray[y : y + h, x : x + w],
+                            )
+                            cv2.putText(
+                                img,
+                                str(count),
+                                (50, 50),
+                                cv2.FONT_HERSHEY_COMPLEX,
+                                2,
+                                (0, 255, 0),
+                                2,
+                            )
 
-                # Save the model into trainer/trainer.yml
-                recognizer.write(
-                    "trainer/trainer.yml"
-                )  # recognizer.save() worked on Mac, but not on Pi
+                            cv2.imshow("image", img)
 
-                # Print the numer of faces trained and end program
-                print(
-                    "\n [INFO] {0} faces trained. Exiting Program".format(
-                        len(np.unique(ids))
+                        k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
+                        if k == 27:  # escape key ASCII Value
+                            break
+                        elif count >= 100:  # Take 100 face sample and stop video
+                            break
+
+                    cam.release()
+                    cv2.destroyAllWindows()
+                    messagebox.showinfo("success", "dataset updated", parent=self.root)
+                else:
+                    messagebox.showinfo(
+                        "Error", "User is not registered", parent=self.root
                     )
-                )
-
-                # ======================================================================================#
-
-                messagebox.showinfo(
-                    "Result", "Successfully generated the dataset and trained the model"
-                )
 
             except Exception as es:
-                messagebox.showerror("Error", f"Due To: {str(es)}", parent=self.root)
+                messagebox.showerror("Error", f"Due to : {str(es)}", parent=self.root)
 
 
 if __name__ == "__main__":

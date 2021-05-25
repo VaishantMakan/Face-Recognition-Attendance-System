@@ -1,6 +1,17 @@
 from tkinter import *
 from tkinter import ttk  # ttk is used for styling
 from PIL import Image, ImageTk
+from tkinter import messagebox
+import mysql.connector
+from adminCheckAttendance import adminCheckAttendance
+from adminCheckStudentDetails import adminCheckStudentDetails
+from adminCheckTeacherDetails import adminCheckTeacherDetails
+from adminRegisterStudent import studentRegister
+from adminRegisterTeacher import teacherRegister
+
+import cv2
+import os
+import numpy as np
 
 
 class adminMainPage:
@@ -47,7 +58,7 @@ class adminMainPage:
         # registerStudent button
         registerStudent_btn = Button(
             registerStudent_frame,
-            # command=self.add_data,
+            command=self.registerStudent,
             width=21,
             height=3,
             text="Register Student",
@@ -76,7 +87,7 @@ class adminMainPage:
         # registerTeacher button
         registerTeacher_btn = Button(
             registerTeacher_frame,
-            # command=self.add_data,
+            command=self.registerTeacher,
             width=21,
             height=3,
             text="Register Teacher",
@@ -97,17 +108,17 @@ class adminMainPage:
             highlightbackground="black", highlightcolor="black"
         )
 
-        # img4 = registerTeacher image
+        # img4 = check student image
         img4 = Image.open("Images/id.jpeg")
         img4 = img4.resize((255, 200), Image.ANTIALIAS)
         self.photoimg4 = ImageTk.PhotoImage(img4)
         checkStudentDetails_img = Label(checkStudentDetails_frame, image=self.photoimg4)
         checkStudentDetails_img.place(x=10, y=10, width=255, height=200)
 
-        # registerTeacher button
+        # check Student button
         checkStudentDetails_btn = Button(
             checkStudentDetails_frame,
-            # command=self.add_data,
+            command=self.check_student_details,
             width=21,
             height=3,
             text="Check / Edit\n Student Details",
@@ -138,7 +149,7 @@ class adminMainPage:
         # registerTeacher button
         checkTeacherDetails_btn = Button(
             checkTeacherDetails_frame,
-            # command=self.add_data,
+            command=self.check_teacher_details,
             width=21,
             height=3,
             text="Check / Edit\n Teacher Details",
@@ -165,7 +176,7 @@ class adminMainPage:
         # registerTeacher button
         trainData_btn = Button(
             trainData_frame,
-            # command=self.add_data,
+            command=self.train_data,
             width=21,
             height=3,
             text="Train Data",
@@ -183,7 +194,7 @@ class adminMainPage:
         photos_frame.config(highlightbackground="black", highlightcolor="black")
 
         # img7 = registerTeacher image
-        img7 = Image.open("Images/photos.jpeg")
+        img7 = Image.open("Images/photos.png")
         img7 = img7.resize((255, 200), Image.ANTIALIAS)
         self.photoimg7 = ImageTk.PhotoImage(img7)
         photos_img = Label(photos_frame, image=self.photoimg7)
@@ -192,7 +203,7 @@ class adminMainPage:
         # registerTeacher button
         photos_btn = Button(
             photos_frame,
-            # command=self.add_data,
+            command=self.photos_dataset,
             width=21,
             height=3,
             text="Photos",
@@ -221,7 +232,7 @@ class adminMainPage:
         # checkAttendance button
         checkAttendance_btn = Button(
             checkAttendance_frame,
-            # command=self.add_data,
+            command=self.check_attendance,
             width=21,
             height=3,
             text="Check Attendance",
@@ -230,6 +241,97 @@ class adminMainPage:
             fg="black",
         )
         checkAttendance_btn.place(x=8, y=250, anchor=NW)
+
+    ###################### Opening Windows ############################
+    def registerStudent(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = studentRegister(self.new_window)
+
+    def registerTeacher(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = teacherRegister(self.new_window)
+
+    def check_student_details(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = adminCheckStudentDetails(self.new_window)
+
+    def check_teacher_details(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = adminCheckTeacherDetails(self.new_window)
+
+    def train_data(self):
+        # Path for face image database
+        path = "dataset"
+
+        recognizer = cv2.face.LBPHFaceRecognizer_create()
+        detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+        # function to get the images and label data
+        def getImagesAndLabels(path):
+
+            imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
+
+            if "dataset/" + ".DS_Store" in imagePaths:
+                imagePaths.remove("dataset/" + ".DS_Store")
+
+            faceSamples = []
+            ids = []
+
+            for imagePath in imagePaths:
+
+                PIL_img = Image.open(imagePath).convert("L")  # convert it to grayscale
+                img_numpy = np.array(PIL_img, "uint8")
+
+                id = int(os.path.split(imagePath)[-1].split(".")[0])
+                faces = detector.detectMultiScale(img_numpy)
+
+                for (x, y, w, h) in faces:
+                    faceSamples.append(img_numpy[y : y + h, x : x + w])
+                    ids.append(id)
+
+                cv2.imshow("Training", img_numpy)
+                cv2.waitKey(1)
+                cv2.destroyAllWindows()
+
+            return faceSamples, ids
+
+        print("\n [INFO] Training faces. It will take a few seconds. Wait ...")
+        faces, ids = getImagesAndLabels(path)
+        recognizer.train(faces, np.array(ids))
+
+        # Save the model into trainer/trainer.yml
+        recognizer.write(
+            "trainer/trainer.yml"
+        )  # recognizer.save() worked on Mac, but not on Pi
+
+        # Print the numer of faces trained and end program
+        print(
+            "\n [INFO] {0} faces trained. Exiting Program".format(len(np.unique(ids)))
+        )
+
+        # ======================================================================================#
+
+        messagebox.showinfo(
+            "Result", "Successfully generated the dataset and trained the model"
+        )
+
+    def photos_dataset(self):
+        # os.startfile("open dataset")
+        os.system("open dataset")
+
+    def check_attendance(self):
+        self.new_window = Toplevel(
+            self.root
+        )  # This asks where we want to open our window
+        self.app = adminCheckAttendance(self.new_window)
 
 
 if __name__ == "__main__":
